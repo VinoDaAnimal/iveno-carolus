@@ -1,0 +1,66 @@
+.bg-black
+{
+    background-color: black;
+}
+
+.bg-slate-grey
+{
+    background-color: #778899;
+}
+
+div.bgblue
+{
+    background-color: #052F4F;
+}
+
+.div_hover:hover
+{ 
+    background-color: rgb(176, 206, 255); 
+}
+
+div.testy
+{
+    background-color: #052F4F;
+}
+
+div.testy:hover
+{
+    background-color: #226AA1;
+    cursor: pointer;
+}
+img
+{
+    width: 100%;
+    height: 100%;
+}
+.font-div
+{
+    width: 30%;
+}
+
+#progressbar {
+    background-color: black;
+    border-radius: 13px;
+    /* (height of inner div) / 2 + padding */
+    padding: 3px;
+  }
+  
+  #progressbar>div {
+    background-color: #226AA1;
+    width: 40%;
+    /* Adjust with JavaScript */
+    height: 20px;
+    border-radius: 10px;
+  }
+
+/*
+responsive-styling
+*/
+
+@media only screen and (min-width: 1198px)
+{
+    .font-div
+    {
+        padding: 45px 0px!important;
+    }
+}
