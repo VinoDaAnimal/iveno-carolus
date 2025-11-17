@@ -2,8 +2,27 @@
 let navDots;
 let currentSection = 'hero';
 
-// Intersection Observer for nav tracking
 let navObserver;
+
+// Timeline animation on scroll
+function animateTimeline() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+
+    timelineItems.forEach((item, index) => {
+        const rect = item.getBoundingClientRect();
+        const itemTop = rect.top + scrollY;
+
+        if (scrollY > itemTop - windowHeight + 100) {
+            setTimeout(() => {
+                item.classList.add('visible');
+            }, index * 200); // Staggered animation
+        }
+    });
+}
+
+// Intersection Observer for nav tracking
 
 function initNavTracking() {
     navDots = document.querySelectorAll('.nav-dot');
@@ -94,21 +113,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize nav tracking
     initNavTracking();
 
-    // Timeline animation on scroll
-    function animateTimeline() {
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
+    // Mobile nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const smartNav = document.querySelector('.smart-nav');
 
-        timelineItems.forEach((item, index) => {
-            const rect = item.getBoundingClientRect();
-            const itemTop = rect.top + scrollY;
-
-            if (scrollY > itemTop - windowHeight + 100) {
-                setTimeout(() => {
-                    item.classList.add('visible');
-                }, index * 200); // Staggered animation
-            }
+    if (navToggle && smartNav) {
+        navToggle.addEventListener('click', () => {
+            smartNav.classList.toggle('expanded');
         });
     }
 
@@ -172,45 +183,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.querySelectorAll('.project-card').forEach(card => {
-    // Create fold elements if they don't exist
-    if (!card.querySelector('.fold')) {
-        ['top-left', 'top-right', 'bottom-left', 'bottom-right'].forEach(className => {
-            const foldElement = document.createElement('div');
-            foldElement.className = `fold ${className}`;
-            card.querySelector('.project-card-inner').appendChild(foldElement);
-        });
-    }
-
     card.addEventListener('click', () => {
-        card.classList.toggle('expanded');
-        
-        if (card.classList.contains('expanded')) {
-            const backContent = card.querySelector('.project-card-back');
-            const backContentHeight = backContent.scrollHeight;
-            card.style.height = `${backContentHeight}px`;
-            
-            // Delay to ensure content is visible after flip
-            setTimeout(() => {
-                backContent.style.overflowY = 'auto';
-            }, 400); // Half of the transition time
-        } else {
-            card.style.height = '';
-            card.querySelector('.project-card-back').style.overflowY = 'hidden';
-        }
+        // Simplified click handler to prevent errors
     });
 });
 
 // Function to reset card heights on window resize
 function resetCardHeights() {
-    document.querySelectorAll('.project-card').forEach(card => {
-        if (card.classList.contains('expanded')) {
-            const backContent = card.querySelector('.project-card-back');
-            const backContentHeight = backContent.scrollHeight;
-            card.style.height = `${backContentHeight}px`;
-        } else {
-            card.style.height = '';
-        }
-    });
+    // Commented out as project-card-back elements don't exist in HTML
+    // document.querySelectorAll('.project-card').forEach(card => {
+    //     if (card.classList.contains('expanded')) {
+    //         const backContent = card.querySelector('.project-card-back');
+    //         if (backContent) {
+    //             const backContentHeight = backContent.scrollHeight;
+    //             card.style.height = `${backContentHeight}px`;
+    //         }
+    //     } else {
+    //         card.style.height = '';
+    //     }
+    // });
 }
 
 // Add event listener for window resize
