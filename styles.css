@@ -158,6 +158,10 @@ body, html {
     border: 2px solid var(--border-color);
 }
 
+.nav-toggle {
+    display: none;
+}
+
 .nav-dots {
     display: flex;
     flex-direction: column;
@@ -744,6 +748,14 @@ footer {
     .smart-nav {
         right: 20px;
         padding: 15px 10px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .smart-nav.expanded {
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .nav-dots {
@@ -754,6 +766,64 @@ footer {
         width: 50px;
         height: 50px;
         font-size: 1.2em;
+    }
+
+    .nav-toggle {
+        display: block;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--primary-black);
+        border: 2px solid var(--white);
+        cursor: pointer;
+        position: fixed;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        z-index: 1000;
+        box-shadow: 0 4px 15px var(--shadow-dark);
+        transition: all 0.3s ease;
+    }
+
+    .nav-toggle:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 6px 20px var(--shadow-dark);
+    }
+
+    .nav-toggle-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 4px;
+        height: 20px;
+        background: transparent;
+    }
+
+    .nav-toggle-icon:before,
+    .nav-toggle-icon:after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: 20px;
+        background: var(--white);
+        transition: all 0.3s ease;
+    }
+
+    .nav-toggle-icon:before {
+        transform: translateY(-50%);
+    }
+
+    .nav-toggle-icon:after {
+        transform: translateY(-50%);
+    }
+
+    .expanded .nav-toggle .nav-toggle-icon:before {
+        transform: rotate(45deg) translate(0, 0);
+    }
+
+    .expanded .nav-toggle .nav-toggle-icon:after {
+        transform: rotate(-45deg) translate(0, 0);
     }
 
     /* Sections Mobile */
@@ -919,6 +989,8 @@ footer {
         right: 15px;
         top: 45%;
         padding: 12px 8px;
+        opacity: 0;
+        pointer-events: none;
     }
 
     .nav-dots {
