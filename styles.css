@@ -1,4 +1,4 @@
-/* root variables - fixed missing definitions */
+/* 1. RESTORED VARIABLES & THEME */
 :root {
     --primary-black: #000000;
     --secondary-grey: #333333;
@@ -7,331 +7,183 @@
     --white: #ffffff;
     --text-primary: #000000;
     --text-secondary: #666666;
-    --text-muted: #999999;
-    --border-color: #e0e0e0;
-    --shadow: rgba(0, 0, 0, 0.1);
-    --shadow-dark: rgba(0, 0, 0, 0.2);
-    /* Fixed missing variables */
-    --light-bg: #fafafa;
     --secondary-blue: #007bff;
     --neon-blue: #00f3ff;
     --neon-purple: #bc13fe;
+    --border-color: #e0e0e0;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --shadow-dark: rgba(0, 0, 0, 0.2);
 }
 
-/* Global Reset */
+/* 2. GLOBAL STYLES */
 * {
     box-sizing: border-box;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body, html {
+body {
     margin: 0;
-    padding: 0;
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
+    background-color: #fafafa;
     color: var(--text-primary);
-    background-color: var(--light-bg);
-    line-height: 1.6;
-    scroll-behavior: smooth;
 }
 
-#neural-network-bg {
-    display: none; 
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Compact Hero Section */
-.hero-section {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--white);
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-content {
-    text-align: center;
-    max-width: 800px;
-    z-index: 2;
-}
-
-.profile-container {
-    position: relative;
-    margin-bottom: 30px;
-    display: inline-block;
-}
-
-.profile-image-container {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 6px solid var(--primary-black);
-    box-shadow: 0 20px 40px var(--shadow-dark);
-    animation: float 6s ease-in-out infinite;
-}
-
-.profile-image-container:hover {
-    transform: scale(1.05) rotate(2deg);
-    box-shadow: 0 30px 60px var(--shadow-dark);
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-}
-
-.profile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.hero-text h1 {
-    font-size: 4em;
-    font-weight: 900;
-    color: var(--primary-black);
-    margin: 20px 0 10px 0;
-    text-transform: uppercase;
-    letter-spacing: -2px;
-}
-
-.hero-subtitle {
-    font-size: 1.4em;
-    color: var(--text-secondary);
-    margin-bottom: 30px;
-    font-weight: 400;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.hero-badges {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-}
-
-.badge {
-    background: var(--primary-black);
-    color: var(--white);
-    padding: 12px 24px;
-    border-radius: 30px;
-    font-size: 0.85em;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 15px var(--shadow-dark);
-}
-
-/* Smart Navigation */
+/* 3. RESTORED SMART NAVIGATION (ICONS & DOTS) */
 .smart-nav {
     position: fixed;
     top: 50%;
-    right: 40px;
+    right: 30px;
     transform: translateY(-50%);
     z-index: 1000;
-    background: var(--white);
-    padding: 20px 15px;
-    border-radius: 25px;
-    box-shadow: 0 8px 32px var(--shadow-dark);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    border-radius: 40px;
+    box-shadow: 0 10px 30px var(--shadow-dark);
     border: 1px solid var(--border-color);
 }
 
 .nav-dots {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .nav-dot {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    background: var(--light-grey);
-    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-secondary);
+    cursor: pointer;
+    border: 2px solid var(--border-color);
     position: relative;
-    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.nav-dot i {
+    font-size: 1.2rem;
 }
 
 .nav-dot:hover, .nav-dot.active {
     background: var(--primary-black);
-    color: var(--white);
+    color: var(--neon-blue);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 15px var(--neon-blue);
     transform: scale(1.1);
 }
 
 .nav-label {
     position: absolute;
-    right: 70px;
+    right: 60px;
     background: var(--primary-black);
     color: var(--white);
-    padding: 6px 12px;
+    padding: 5px 12px;
     border-radius: 4px;
-    font-size: 0.75em;
+    font-size: 0.7rem;
     opacity: 0;
     pointer-events: none;
     white-space: nowrap;
 }
 
-.nav-dot:hover .nav-label {
-    opacity: 1;
-    transform: translateX(-5px);
-}
+.nav-dot:hover .nav-label { opacity: 1; transform: translateX(-5px); }
 
-/* Sections */
-section {
-    margin: 40px 0;
-    padding: 60px 40px;
-    background: var(--white);
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 20px var(--shadow);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s ease-out forwards;
-}
-
-@keyframes fadeInUp {
-    to { opacity: 1; transform: translateY(0); }
-}
-
-h2 {
-    font-size: 2.2em;
-    font-weight: 800;
-    margin-bottom: 40px;
-    color: var(--primary-black);
-}
-
-/* Timeline - Fixed Vertical Alignment */
+/* 4. FIXED TIMELINE (NON-BLAND VERSION) */
 .timeline {
     position: relative;
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px 0;
+    padding: 40px 0;
 }
 
-/* The vertical line - moved to the left */
 .timeline::before {
     content: '';
     position: absolute;
-    left: 20px; /* Fixed position for the line */
-    width: 2px;
+    left: 20px;
+    width: 3px;
     height: 100%;
-    background: var(--border-color);
-    top: 0;
+    background: linear-gradient(to bottom, var(--neon-blue), var(--neon-purple));
+    border-radius: 3px;
 }
 
 .timeline-item {
-    width: 100%; /* Take full width */
-    margin-bottom: 40px;
     position: relative;
-    padding-left: 60px; /* Space for the line and dot */
-    text-align: left;
+    padding-left: 60px;
+    margin-bottom: 50px;
 }
 
-/* The Dot - Centered on the line */
 .timeline-marker {
     position: absolute;
-    top: 25px; /* Aligns with the first line of text */
-    left: 13px; /* Centers the 16px dot on the 2px line (20px - 8px + 1px) */
-    width: 16px;
-    height: 16px;
+    left: 11px; /* Centers 20px dot on 3px line */
+    top: 0;
+    width: 20px;
+    height: 20px;
     background: var(--primary-black);
-    border: 3px solid var(--white); /* Gives it a "cut-out" look over the line */
+    border: 3px solid var(--neon-blue);
     border-radius: 50%;
-    z-index: 5;
-    box-shadow: 0 0 0 2px var(--primary-black);
+    z-index: 10;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+/* Pulsing effect for the first (current) role */
+.timeline-item:first-child .timeline-marker {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 243, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
 }
 
 .timeline-content {
     background: var(--white);
     padding: 25px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px var(--shadow);
-    display: inline-block; /* Helps maintain shape */
-    width: 100%;
+    border-radius: 15px;
+    border-left: 5px solid var(--primary-black);
+    box-shadow: 0 5px 20px var(--shadow);
 }
 
-.timeline-title {
-    font-weight: 700;
-    font-size: 1.2em;
+.timeline-content:hover {
+    border-left-color: var(--neon-blue);
+    transform: translateX(10px);
+}
+
+/* 5. PROJECT CARDS (THEMED) */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.project-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 4px;
+    background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+}
+
+.project-card i {
+    font-size: 2rem;
+    margin-bottom: 15px;
     color: var(--primary-black);
 }
 
-.timeline-company {
-    font-weight: 600;
-    color: var(--secondary-blue);
-    margin: 5px 0;
-}
-
-.timeline-date {
-    font-size: 0.85em;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    font-weight: 500;
-}
-
-/* Skills & Projects Refined */
-.skill-category h4 {
-    margin-top: 25px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.skill-tag {
-    background: var(--light-grey);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.85em;
-    font-weight: 500;
-    border: 1px solid transparent;
-}
-
-.skill-tag:hover {
-    border-color: var(--primary-black);
-    background: var(--white);
-}
-
-/* Updated Responsive Styles */
-@media (max-width: 768px) {
-    .hero-text h1 { font-size: 2.5em; }
-    
-    .smart-nav { 
-        bottom: 20px; 
-        top: auto; 
-        right: 50%; 
-        transform: translateX(50%); 
-        flex-direction: row;
-        width: auto;
-        padding: 10px 20px;
-    }
-    
-    .nav-dots { flex-direction: row; }
-    
-    .timeline::before { left: 15px; }
-    .timeline-item { padding-left: 45px; }
-    .timeline-marker { left: 8px; }
-
-    section { padding: 30px 20px; margin: 20px 10px; }
+/* 6. UTILITIES */
+.badge {
+    background: var(--primary-black);
+    color: var(--neon-blue);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    border: 1px solid var(--neon-blue);
 }
