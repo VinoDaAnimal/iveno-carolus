@@ -47,4 +47,4 @@ Not in the new list but on the old site: Insurance Prediction Challenge | Zindi,
 
 ## Update 2026-10-31
 
-- Spatio-Temporal Beam-Level Traffic Forecasting Challenge by ITU: **Bronze** (confirmed by Iveno). No rank was supplied; the site shows **32nd of 171**, derived from the old site's "Top 18.7% (171 participants)" (32 is the only rank of 171 that rounds to 18.7%) and labelled as derived. TODO(Iveno): confirm the exact rank if it differs.
+- Spatio-Temporal Beam-Level Traffic Forecasting Challenge by ITU: **Bronze** (confirmed by Iveno). No rank was supplied; the site shows **32nd of 171**, confirmed by Iveno (2026-10-31); it matches the old site's "Top 18.7% (171 participants)".
