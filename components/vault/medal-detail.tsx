@@ -16,7 +16,6 @@ export function MedalDetail({ f }: { f: MedalResult }) {
         <div><dt className="text-xs text-vault-muted">Top</dt><dd className="m-0 text-xl font-extrabold tracking-[-0.03em] md:text-3xl">{topPct(f.rank, f.field)}%</dd></div>
       </dl>
       <FieldStrip field={f.field} position={slotCentre(f.rank, f.field)} medal={f.medal} className="mt-3 [--background:var(--vault)] [--foreground:var(--vault-foreground)] [--tick:var(--vault-edge)]" />
-      {f.note && <p className="mt-2 text-xs text-vault-muted">{f.note}</p>}
       <p className="mt-1 flex justify-between text-xs text-vault-muted"><span>1st</span><span>{ordinal(f.field)}</span></p>
       <p className="mt-2 text-sm text-vault-muted md:mt-3">{f.prize.startsWith("Knowledge") ? f.prize : `Prize pool: ${f.prize}`}</p>
       <p className="mt-0.5 text-xs text-vault-muted md:text-sm">{f.tags.join(", ")}</p>

@@ -13,8 +13,6 @@ export type MedalResult = {
   field: number;
   /** As listed on Zindi; the competition's pool, not Iveno's winnings. */
   prize: string;
-  /** Shown under the numbers when a value is derived rather than stated. */
-  note?: string;
 };
 
 export const medals: MedalResult[] = [
