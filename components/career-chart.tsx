@@ -1,4 +1,4 @@
-import { NOW, datedEntries, roles } from "@/lib/data";
+import { NOW, datedEntries, roleSpan, roles } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 const X0 = 2019.7;
@@ -6,9 +6,6 @@ const X1 = NOW + 0.15;
 const at = (year: number) => ((year - X0) / (X1 - X0)) * 100;
 const YEARS = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const medalFill = { gold: "bg-gold", silver: "bg-silver", bronze: "bg-bronze" } as const;
-
-// Year resolution: "2021 - 2022" covers both calendar years, capped at today.
-const span = (from: number, to: number | null) => [from, Math.min(to === null ? NOW : to + 1, NOW)] as const;
 
 export function CareerChart() {
   const rows = [...roles].sort((a, b) => a.from - b.from || (a.to ?? 9999) - (b.to ?? 9999));
@@ -22,7 +19,7 @@ export function CareerChart() {
         </div>
         <ol className="relative m-0 list-none p-0">
           {rows.map((r, i) => {
-            const [start, end] = span(r.from, r.to);
+            const [start, end] = roleSpan(r);
             const late = at(start) > 55;
             return (
               <li key={r.title} className="relative h-8">
@@ -65,7 +62,7 @@ export function CareerChart() {
         </div>
       </div>
       <figcaption className="mt-2 max-w-prose text-sm text-muted-foreground">
-        Roles by year, 2020 to today. Dates are whole years, so roles that change mid-year overlap. Freelance work (grey) runs alongside the full-time roles from 2024; dots are Zindi entries with a known month.
+        Roles by year, 2020 to today. Most dates are whole years, so roles that change mid-year overlap; Spirit Invest ends early 2026, when SeedGrowth Analytics begins. Freelance work (grey) runs alongside the full-time roles from 2024; dots are Zindi entries with a known month.
       </figcaption>
       <div className="sr-only"><table>
         <caption>Career timeline</caption>

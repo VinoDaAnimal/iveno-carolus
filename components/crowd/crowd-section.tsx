@@ -6,13 +6,17 @@ import { ordinal, slotCentre, topPct } from "@/lib/rank";
 
 const totalEntrants = medalsByFinish.reduce((s, f) => s + f.field, 0);
 const card = "max-w-sm rounded-xl bg-card/90 p-5 shadow-sm ring-1 ring-border backdrop-blur-md md:p-6";
-const step = "h-svh snap-start snap-always px-4 pt-6 md:px-10 md:pt-10";
+const step = "h-svh snap-start snap-always px-4 pt-4 md:px-10 md:pt-10";
+// Positioned by the scene each frame; hidden until it has somewhere to point.
+const label = "invisible pointer-events-none absolute left-0 top-0 -mt-2 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm ring-1 ring-border";
 
 export function CrowdSection() {
   return (
     <section id="proof" aria-labelledby="proof-h" className="relative bg-stage">
-      <div className="sticky top-0 h-svh" aria-hidden="true">
+      <div className="sticky top-0 h-svh overflow-hidden" aria-hidden="true">
         <canvas data-crowd-canvas className="block size-full" />
+        <span data-label-first className={`${label} bg-card text-foreground`}>1st</span>
+        <span data-label-me className={`${label} bg-foreground text-background`}>Iveno</span>
       </div>
       <div className="relative -mt-[100svh]">
         <div data-step="0" className={step}>

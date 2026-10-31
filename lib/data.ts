@@ -44,12 +44,18 @@ export type Role = {
   to: number | null;
   track: "employed" | "freelance";
   description: string;
+  /** Plot overrides in fractional years, where Iveno gave more than the year. */
+  start?: number;
+  end?: number;
 };
 
+// Iveno: left Spirit Invest early 2026 (around Feb) and started at SeedGrowth straight after.
+const HANDOVER_2026 = 2026 + 1.5 / 12;
+
 export const roles: Role[] = [
-  { title: "Analytics Engineer", org: "SeedGrowth Analytics", dates: "2026 - Present", from: 2026, to: null, track: "employed", description: "Design and maintain scalable data pipelines and ETL workflows using cloud platforms such as Azure. Build and optimize data models for analytics and reporting, ensuring high data quality, integrity, and performance. Collaborate with cross-functional teams to translate business requirements into data solutions, leveraging tools like SQL, Python, and cloud-native services (e.g., data lakes, warehouses, and orchestration tools). Implement monitoring, automation, and CI/CD practices to support reliable and efficient data operations." },
+  { title: "Analytics Engineer", org: "SeedGrowth Analytics", dates: "2026 - Present", from: 2026, to: null, start: HANDOVER_2026, track: "employed", description: "Design and maintain scalable data pipelines and ETL workflows using cloud platforms such as Azure. Build and optimize data models for analytics and reporting, ensuring high data quality, integrity, and performance. Collaborate with cross-functional teams to translate business requirements into data solutions, leveraging tools like SQL, Python, and cloud-native services (e.g., data lakes, warehouses, and orchestration tools). Implement monitoring, automation, and CI/CD practices to support reliable and efficient data operations." },
   { title: "Freelance Data Scientist & Developer", org: "Self-Employed", dates: "2024 - Present", from: 2024, to: null, track: "freelance", description: "Developing full-stack web applications, implementing machine learning solutions, and providing data science consulting services for various clients." },
-  { title: "Business Intelligence Manager (Junior)", org: "Spirit Invest", dates: "2024 - 2026", from: 2024, to: 2026, track: "employed", description: "Leading business intelligence initiatives, developing advanced analytics solutions, and managing data-driven decision making processes for financial operations." },
+  { title: "Business Intelligence Manager (Junior)", org: "Spirit Invest", dates: "2024 - 2026", from: 2024, to: 2026, end: HANDOVER_2026, track: "employed", description: "Leading business intelligence initiatives, developing advanced analytics solutions, and managing data-driven decision making processes for financial operations." },
   { title: "Data Science Associate (Contractor)", org: "Cavell Group", dates: "2022 - 2023", from: 2022, to: 2023, track: "employed", description: "Designed and implemented complex web scraping pipelines using Python and Azure services. Integrated cutting-edge LLMs for data summarization and insight extraction. Optimized performance with Azure Data Factory and custom ETL packages." },
   { title: "Junior Data Scientist & Analyst", org: "Sprout Performance Partners", dates: "2021 - 2022", from: 2021, to: 2022, track: "employed", description: "Automated data processes and analyzed digital marketing data using GCP. Significantly improved campaign strategies and operational efficiency through advanced analytics and reporting automation." },
   { title: "Junior Data Scientist", org: "Ignition Group", dates: "2021", from: 2021, to: 2021, track: "employed", description: "Expanded expertise in big data visualization and cloud-based data solutions. Contributed to enterprise-level data analytics projects and reporting systems." },
@@ -68,11 +74,16 @@ export const datedEntries = [
 /** "Present" on the career axis. Bumped by hand; the chart never runs past it. */
 export const NOW = 2026 + 10 / 12;
 
+/** Plotted span: whole calendar years ("2021 - 2022" covers both), unless overridden, capped at today. */
+export function roleSpan(r: Role): [number, number] {
+  return [r.start ?? r.from, Math.min(r.end ?? (r.to === null ? NOW : r.to + 1), NOW)];
+}
+
 export const projects = [
-  { name: "Malinga All Nations Web App", description: "A multi-device web application combining an online store, on-premise POS system, and admin management platform. The system enables customers to order products remotely and enroll in retail training courses, while supporting in-store sales, inventory, and staff management through a secure local network deployment.", stack: ["React.js", "Node.js", "MySQL", "POS Systems", "On-Prem Infrastructure", "Full-Stack Development"], dates: "2025 - Present", status: "Production (In-Store Deployment)" },
-  { name: "Advanced Data Pipeline & Web Scraping System", org: "Cavell Group", description: "State-of-the-art data pipeline performing advanced web scraping across 1.4 million URLs. Collects, cleans, and structures text data while mining collective information for dashboarding and AI training preparation.", stack: ["Web Scraping", "Data Pipeline", "ETL Processing", "Azure", "Python", "Data Mining", "LLMs"], dates: "2022 - 2023", status: "Enterprise Data Pipeline", figure: { value: "1.4 million", label: "URLs scraped" } },
-  { name: "Africa-Bites", description: "Comprehensive African cuisine website with recipes, history, and YouTube video integration using web scraping and vanilla technologies.", stack: ["Web Scraping", "HTML/CSS", "JavaScript", "Bootstrap", "Python"], dates: "Apr 2020 - May 2020", status: "Hackathon Project" },
-  { name: "WeThinkCode C Projects", description: "Complete first semester programming projects at WeThinkCode, demonstrating fundamental programming skills and problem-solving abilities.", stack: ["C Programming", "Algorithms", "Data Structures", "Problem Solving"], dates: "May 2019 - Dec 2019", status: "Educational Projects" },
+  { id: "malinga", name: "Malinga All Nations Web App", description: "A multi-device web application combining an online store, on-premise POS system, and admin management platform. The system enables customers to order products remotely and enroll in retail training courses, while supporting in-store sales, inventory, and staff management through a secure local network deployment.", stack: ["React.js", "Node.js", "MySQL", "POS Systems", "On-Prem Infrastructure", "Full-Stack Development"], dates: "Oct 2025 - Mar 2026", status: "Production (In-Store Deployment)" },
+  { id: "cavell", name: "Advanced Data Pipeline & Web Scraping System", org: "Cavell Group", description: "State-of-the-art data pipeline performing advanced web scraping across 1.4 million URLs. Collects, cleans, and structures text data while mining collective information for dashboarding and AI training preparation.", stack: ["Web Scraping", "Data Pipeline", "ETL Processing", "Azure", "Python", "Data Mining", "LLMs"], dates: "2022 - 2023", status: "Enterprise Data Pipeline", figure: { value: 1_400_000, label: "URLs scraped" } },
+  { id: "africa-bites", name: "Africa-Bites", description: "Comprehensive African cuisine website with recipes, history, and YouTube video integration using web scraping and vanilla technologies.", stack: ["Web Scraping", "HTML/CSS", "JavaScript", "Bootstrap", "Python"], dates: "Apr 2020 - May 2020", status: "Hackathon Project" },
+  { id: "wethinkcode", name: "WeThinkCode C Projects", description: "Complete first semester programming projects at WeThinkCode, demonstrating fundamental programming skills and problem-solving abilities.", stack: ["C Programming", "Algorithms", "Data Structures", "Problem Solving"], dates: "May 2019 - Dec 2019", status: "Educational Projects" },
 ];
 
 export const skills = [
@@ -89,6 +100,9 @@ export const about = [
   "His professional journey showcases deep expertise in Python-based ML frameworks (TensorFlow, PyTorch, Scikit-learn) and data engineering tools. At Cavell Group, he developed complex web scraping pipelines and integrated LLMs for advanced data processing. His work at Sprout Performance Partners involved sophisticated data analysis and automation using GCP. He is now an Analytics Engineer at SeedGrowth Analytics, after leading data-driven initiatives in finance as Business Intelligence Manager at Spirit Invest.",
   "As a freelance developer, Iveno has successfully delivered full-stack applications combining ML capabilities with modern web technologies. His competitive programming achievements in ML competitions (Zindi, Kaggle) validate his technical prowess and problem-solving abilities in real-world machine learning challenges.",
 ];
+
+// From Iveno's brief (2026-10-31): "the current role is mostly Microsoft Fabric, Power BI and Azure".
+export const currentRoleTools = ["Microsoft Fabric", "Power BI", "Azure"];
 
 export const contact = {
   email: "ivenocarolus@gmail.com",

@@ -50,6 +50,7 @@ Schibsted Grotesk, variable, loaded with `next/font` (one woff2, Latin subset, w
 | `components/ui/shine-border.tsx` | Magic UI [shine-border](https://magicui.design/r/shine-border.json) | Original animates `background-position`. Rebuilt as a rotating two-lobed gradient; silver tokens |
 | Coin flip and tilt idea | Aceternity [3d-card](https://ui.aceternity.com/registry/3d-card.json) | Read for the pointer-tilt maths in prototype B; the build flips coins in three.js instead |
 | Rejected | Aceternity [card-spotlight](https://ui.aceternity.com/registry/card-spotlight.json) (pulls in three.js + R3F); Magic UI [number-ticker](https://magicui.design/r/number-ticker.json) (spring-based) | |
+| Work drawings, skills stack | Written by hand: `work-art.tsx` (schematic SVGs, no data implied), `skills.tsx` (CSS 3D, radio inputs; "where it shows up" is a text match against the roles, projects and the current-role tools Iveno named) | |
 | Charts | Written by hand: `career-chart.tsx` (HTML/CSS Gantt), `field-strip.tsx` (SVG ticks + HTML marker), `crowd/crowd-scene.ts`, `vault/medal-scene.ts` (three.js 0.187) | |
 
 21st.dev's registry returned 403 without an API key on 2026-10-31, so nothing is taken from it directly.
@@ -63,7 +64,11 @@ Schibsted Grotesk, variable, loaded with `next/font` (one woff2, Latin subset, w
 | Camera flies field to field | Crowd | three.js lerp per frame, one step per wheel gesture, CSS scroll snap for touch and keys | camera cuts |
 | Result card swish | Crowd | `useAnimate` from `motion/react-mini` (WAAPI), `transform` from an offset, never from hidden | none |
 | Medal blocks rise | Crowd | three.js scale | final height |
-| Coins drop in, sway by rarity, flip on pick | Vault | three.js | placed, still, flip instant |
+| Camera frames each whole field in the space the card leaves free (first place bottom-left); "1st" and "Iveno, nth" labels track the blocks | Crowd | three.js `setViewOffset` + fit search | camera cuts |
+| Coins drop in, sway by rarity, flip on pick; one row you can swipe on narrow stages, first medal turned over on load | Vault | three.js (lathe-turned body, raised rim, stamped faces with bump maps, laurel, loop) | placed, still, flip instant |
+| Project drawings draw in with the figure's scroll position; packets flow along links | Work | CSS scroll-driven animations (`view-timeline`, `stroke-dashoffset`, `transform`), no JS | finished drawing, no flow |
+| 1,400,000 URLs counts up | Work (Cavell) | `requestAnimationFrame` | static |
+| Skill layer slides out of the stack | Skills | CSS 3D transforms + radio inputs, no JS | instant |
 | Glass card in/out | Vault | `m.article` + `AnimatePresence initial={false}`, `transform` + `clip-path` | instant (`MotionConfig reducedMotion="user"`) |
 | Gold beam / silver sheen | Vault card | CSS `rotate` | off |
 | Role unfolds on a top hinge | Experience | `m.div` `rotateX` + `clip-path`, `AnimatePresence initial={false}` | instant |
@@ -72,7 +77,7 @@ Motion setup: `LazyMotion strict` with features loaded by `import("./motion-feat
 
 ## Performance budget
 
-- **First-load JS:** 137.5 KB gzipped (module scripts referenced by `out/index.html`, gzip -9, measured 2026-10-31). The 38.6 KB core-js polyfill chunk is `noModule`, so modern browsers never download it.
+- **First-load JS:** 138.5 KB gzipped (re-measured after the mobile pass) (module scripts referenced by `out/index.html`, gzip -9, measured 2026-10-31). The 38.6 KB core-js polyfill chunk is `noModule`, so modern browsers never download it.
 - **Lazy:** three.js (~132 KB gz) loads when the crowd or vault comes within 600 px. Vault and experience interactivity, and all of Motion, load the same way (`components/lazy-island.tsx`).
 - `next/image` isn't used: with static export it can't optimise, and it would add client JS. The portrait is a static import (basePath-safe) with `fetchPriority="high"`.
 

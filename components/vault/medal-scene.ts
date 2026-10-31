@@ -4,35 +4,63 @@ import type { MedalResult } from "@/lib/data";
 
 type Colors = { gold: string; silver: string; bronze: string };
 
-function engrave(lines: [text: string, size: number, y: number, weight: number][], font: string) {
+const FACE_R = 0.84; // inner field, inside the raised rim
+const SIZE = 512;
+
+/** Stamped face: light field, dark (recessed) lettering and a laurel ring. Also used as the bump map. */
+function face(lines: [text: string, size: number, y: number, weight: number][], font: string) {
   const c = document.createElement("canvas");
-  c.width = c.height = 512;
+  c.width = c.height = SIZE;
   const g = c.getContext("2d")!;
-  const grad = g.createRadialGradient(256, 200, 40, 256, 256, 256);
-  grad.addColorStop(0, "white");
-  grad.addColorStop(1, "rgb(185,185,185)");
+  const grad = g.createRadialGradient(220, 190, 30, 256, 256, 260);
+  grad.addColorStop(0, "rgb(250,250,250)");
+  grad.addColorStop(1, "rgb(196,196,196)");
   g.fillStyle = grad;
-  g.fillRect(0, 0, 512, 512);
-  g.strokeStyle = "rgb(138,138,138)";
-  g.lineWidth = 10;
-  g.beginPath();
-  g.arc(256, 256, 226, 0, Math.PI * 2);
-  g.stroke();
+  g.fillRect(0, 0, SIZE, SIZE);
+  // Laurel: two arcs of leaves meeting at the bottom.
+  g.fillStyle = "rgb(120,120,120)";
+  for (const side of [-1, 1]) {
+    for (let k = 0; k < 13; k++) {
+      const a = Math.PI / 2 + side * (0.25 + k * 0.17);
+      g.save();
+      g.translate(256 + Math.cos(a) * 214, 256 + Math.sin(a) * 214);
+      g.rotate(a + side * 0.9);
+      g.beginPath();
+      g.ellipse(0, 0, 15, 6, 0, 0, Math.PI * 2);
+      g.fill();
+      g.restore();
+    }
+  }
   g.textAlign = "center";
   g.textBaseline = "middle";
   for (const [text, size, y, weight] of lines) {
     g.font = `${weight} ${size}px ${font}`;
-    g.fillStyle = "white";
-    g.fillText(text, 258, y + 3);
-    g.fillStyle = "rgb(74,74,74)";
+    g.fillStyle = "rgb(255,255,255)";
+    g.fillText(text, 257, y + 3); // catch-light under the stamp
+    g.fillStyle = "rgb(70,70,70)";
     g.fillText(text, 256, y);
   }
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
   t.anisotropy = 4;
-  t.center.set(0.5, 0.5);
-  t.rotation = Math.PI / 2; // cylinder cap UVs run sideways
   return t;
+}
+
+/** Concentric brushing for the rim and faces. */
+function brushed() {
+  const c = document.createElement("canvas");
+  c.width = c.height = 256;
+  const g = c.getContext("2d")!;
+  g.fillStyle = "rgb(110,110,110)";
+  g.fillRect(0, 0, 256, 256);
+  for (let r = 2; r < 182; r += 1.5) {
+    const v = 90 + Math.floor(Math.random() * 60);
+    g.strokeStyle = `rgb(${v},${v},${v})`;
+    g.beginPath();
+    g.arc(128, 128, r, 0, Math.PI * 2);
+    g.stroke();
+  }
+  return new THREE.CanvasTexture(c);
 }
 
 function wrap(text: string, max: number) {
@@ -44,7 +72,10 @@ function wrap(text: string, max: number) {
   return [...out, line.trim()].slice(0, 4);
 }
 
-/** Eight engraved coins: rank and field on the front, the competition on the back. */
+/**
+ * Eight struck medals: rank and field on the front, the competition on the back.
+ * Wide stages show a 4 x 2 grid; narrow ones a single row centred on the selected medal.
+ */
 export function createMedalScene(
   canvas: HTMLCanvasElement,
   medals: MedalResult[],
@@ -54,49 +85,74 @@ export function createMedalScene(
   onPick: (i: number) => void,
 ) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
   const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environment = env;
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-  const sweep = new THREE.PointLight(0xffffff, 40, 12);
-  const key = new THREE.DirectionalLight(0xffffff, 1.5);
+  const sweep = new THREE.PointLight(0xffffff, 40, 14);
+  const key = new THREE.DirectionalLight(0xffffff, 1.6);
   key.position.set(-3, 4, 6);
-  scene.add(sweep, key, new THREE.HemisphereLight(0xffffff, 0x223322, 1.2));
+  scene.add(sweep, key, new THREE.HemisphereLight(0xffffff, 0x223322, 1.0));
 
-  const disc = new THREE.CylinderGeometry(1, 1, 0.14, 96).rotateX(Math.PI / 2);
-  const textures: THREE.Texture[] = [];
+  // Body: rim, bevel and edge turned on a lathe, faces sunk inside the rim.
+  const profile = [
+    [0, 0.07], [FACE_R, 0.07], [0.87, 0.115], [0.97, 0.115], [1, 0.085],
+    [1, -0.085], [0.97, -0.115], [0.87, -0.115], [FACE_R, -0.07], [0, -0.07],
+  ].map(([x, y]) => new THREE.Vector2(x, y));
+  const body = new THREE.LatheGeometry(profile, 128).rotateX(Math.PI / 2);
+  const front = new THREE.CircleGeometry(FACE_R, 96).translate(0, 0, 0.071);
+  const back = new THREE.CircleGeometry(FACE_R, 96).rotateY(Math.PI).translate(0, 0, -0.071);
+  const loop = new THREE.TorusGeometry(0.13, 0.035, 16, 48).translate(0, 1.12, 0);
+  const brush = brushed();
+
+  const textures: THREE.Texture[] = [brush];
   const coins = medals.map((f, i) => {
-    const base = { color: new THREE.Color(colors[f.medal]), metalness: 0.85, roughness: f.medal === "gold" ? 0.25 : 0.35, envMapIntensity: 1.6 };
-    const back = wrap(f.name, 16);
-    const front = engrave([[String(f.rank), 190, 230, 700], [`of ${f.field}`, 64, 360, 500]], font);
-    const rear = engrave(back.map((l, k) => [l, 44, 256 + (k - (back.length - 1) / 2) * 56, 600]), font);
-    textures.push(front, rear);
-    const mesh = new THREE.Mesh(disc, [
-      new THREE.MeshStandardMaterial(base),
-      new THREE.MeshStandardMaterial({ ...base, map: front }),
-      new THREE.MeshStandardMaterial({ ...base, map: rear }),
-    ]);
-    mesh.userData = { i, medal: f.medal, flip: 0, drop: reduce ? 0 : 6 + i * 0.6, home: new THREE.Vector3() };
-    scene.add(mesh);
-    return mesh;
+    const metal = { color: new THREE.Color(colors[f.medal]).lerp(new THREE.Color(0xffffff), 0.18), metalness: 1, roughness: f.medal === "gold" ? 0.26 : 0.32, roughnessMap: brush, envMapIntensity: 1.5 };
+    const name = wrap(f.name, 16);
+    const fFace = face([[String(f.rank), 170, 236, 700], [`of ${f.field}`, 58, 350, 600], [f.medal.toUpperCase(), 30, 120, 700]], font);
+    const bFace = face([...name.map((l, k): [string, number, number, number] => [l, 40, 250 + (k - (name.length - 1) / 2) * 50, 600])], font);
+    textures.push(fFace, bFace);
+    const coin = new THREE.Group();
+    coin.add(
+      new THREE.Mesh(body, new THREE.MeshStandardMaterial(metal)),
+      new THREE.Mesh(loop, new THREE.MeshStandardMaterial(metal)),
+      new THREE.Mesh(front, new THREE.MeshStandardMaterial({ ...metal, map: fFace, bumpMap: fFace, bumpScale: 3 })),
+      new THREE.Mesh(back, new THREE.MeshStandardMaterial({ ...metal, map: bFace, bumpMap: bFace, bumpScale: 3 })),
+    );
+    coin.children.forEach((c) => (c.userData.i = i));
+    coin.userData = { i, medal: f.medal, flip: 0, drop: reduce ? 0 : 6 + i * 0.5, home: new THREE.Vector3() };
+    scene.add(coin);
+    return coin;
   });
 
-  let selected = -1;
+  let selected = 0;
+  let row = false;
   let visible = false;
   let frame = 0;
+  const camX = { cur: 0, target: 0 };
+  const GAP_GRID = 2.6, GAP_ROW = 2.35;
 
   const layout = () => {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    const cols = w / h > 1.3 ? 4 : 2, rows = Math.ceil(coins.length / cols), gap = 2.5;
-    coins.forEach((m, i) => m.userData.home.set((i % cols - (cols - 1) / 2) * gap, -(Math.floor(i / cols) - (rows - 1) / 2) * gap, 0));
-    const span = Math.max((cols * gap) / camera.aspect, rows * gap) * 0.62;
-    camera.position.set(0, 0, span / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
-    camera.lookAt(0, 0, 0);
+    row = camera.aspect < 1.25;
+    const half = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    if (row) {
+      coins.forEach((m, i) => m.userData.home.set(i * GAP_ROW, 0, 0));
+      // Selected medal fills ~80% of the height; neighbours peek in at the sides.
+      camera.position.z = 1.55 / half;
+    } else {
+      const cols = 4, rows = 2;
+      coins.forEach((m, i) => m.userData.home.set((i % cols - (cols - 1) / 2) * GAP_GRID, -(Math.floor(i / cols) - (rows - 1) / 2) * GAP_GRID * 1.05, 0));
+      const span = Math.max((cols * GAP_GRID) / camera.aspect, rows * GAP_GRID * 1.1) * 0.56;
+      camera.position.z = span / half;
+    }
+    camX.target = row ? selected * GAP_ROW : 0;
+    if (reduce) camX.cur = camX.target;
     camera.updateProjectionMatrix();
   };
   const ro = new ResizeObserver(layout);
@@ -107,16 +163,23 @@ export function createMedalScene(
   });
   io.observe(canvas);
 
+  // Tap a medal to select it; on the single row, swipe to move to the next one.
   const ray = new THREE.Raycaster();
   const ndc = new THREE.Vector2();
-  const onClick = (e: MouseEvent) => {
+  let downX = 0, downY = 0;
+  const onDown = (e: PointerEvent) => { downX = e.clientX; downY = e.clientY; };
+  const onUp = (e: PointerEvent) => {
+    const dx = e.clientX - downX, dy = e.clientY - downY;
+    if (row && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { onPick(selected - Math.sign(dx)); return; }
+    if (Math.hypot(dx, dy) > 10) return;
     const r = canvas.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
-    const hit = ray.intersectObjects(coins)[0];
+    const hit = ray.intersectObjects(coins, true)[0];
     if (hit) onPick(hit.object.userData.i);
   };
-  canvas.addEventListener("click", onClick);
+  canvas.addEventListener("pointerdown", onDown);
+  canvas.addEventListener("pointerup", onUp);
 
   const timer = new THREE.Timer();
   function tick() {
@@ -125,30 +188,37 @@ export function createMedalScene(
     timer.update();
     const dt = Math.min(timer.getDelta(), 0.05), t = timer.getElapsed();
     const k = reduce ? 1 : 1 - Math.pow(0.02, dt);
-    sweep.position.set(Math.sin(t * 0.5) * 6, Math.cos(t * 0.3) * 2, 3);
+    camX.cur += (camX.target - camX.cur) * k;
+    camera.position.x = camX.cur;
+    camera.lookAt(camX.cur, 0, 0);
+    sweep.position.set(camX.cur + Math.sin(t * 0.5) * 6, Math.cos(t * 0.3) * 2, 3);
     for (const m of coins) {
       const u = m.userData;
       u.drop += (0 - u.drop) * k * 0.6;
       // Rarity reads as motion: golds sway, silvers stir, bronzes rest.
-      const sway = reduce ? 0 : u.medal === "gold" ? Math.sin(t * 0.8 + u.i) * 0.35 : u.medal === "silver" ? Math.sin(t * 0.6 + u.i) * 0.15 : 0;
+      const sway = reduce ? 0 : u.medal === "gold" ? Math.sin(t * 0.8 + u.i) * 0.32 : u.medal === "silver" ? Math.sin(t * 0.6 + u.i) * 0.14 : 0;
       u.flip += ((u.i === selected ? Math.PI : 0) - u.flip) * k;
       m.rotation.y = u.flip + sway;
-      m.position.set(u.home.x, u.home.y + u.drop, u.i === selected ? 0.8 : 0);
+      m.position.set(u.home.x, u.home.y + u.drop, u.i === selected ? 0.6 : 0);
     }
     renderer.render(scene, camera);
     frame = requestAnimationFrame(tick);
   }
 
   return {
-    select(i: number) { selected = i; },
+    select(i: number) {
+      selected = i;
+      camX.target = row ? i * GAP_ROW : 0;
+    },
     dispose() {
       cancelAnimationFrame(frame);
       ro.disconnect();
       io.disconnect();
-      canvas.removeEventListener("click", onClick);
+      canvas.removeEventListener("pointerdown", onDown);
+      canvas.removeEventListener("pointerup", onUp);
       textures.forEach((t) => t.dispose());
-      coins.forEach((m) => (m.material as THREE.Material[]).forEach((x) => x.dispose()));
-      disc.dispose();
+      coins.forEach((c) => c.children.forEach((m) => ((m as THREE.Mesh).material as THREE.Material).dispose()));
+      [body, front, back, loop].forEach((g) => g.dispose());
       env.dispose();
       pmrem.dispose();
       renderer.dispose();

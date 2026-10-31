@@ -1,7 +1,9 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { VaultIsland } from "@/components/islands";
-import { MedalList, VaultStage } from "@/components/vault/medal-list";
+import { MedalDetail, glassCard } from "@/components/vault/medal-detail";
+import { MedalList, VaultLayout } from "@/components/vault/medal-list";
+import { medals } from "@/lib/data";
 import { basePath } from "@/lib/site";
 
 // Drop the banner into public/images and it appears on the next build.
@@ -28,12 +30,12 @@ export function VaultSection() {
         )}
         <h2 id="vault-h" className="text-[clamp(2.25rem,6vw,4rem)] font-extrabold leading-none tracking-[-0.03em]">Zindi medal vault</h2>
         <p className="mt-3 max-w-xl text-vault-muted">
-          Three golds, two silvers, three bronzes, each engraved with the finishing rank and the size of the field. Pick a coin to turn it over.
+          Three golds, two silvers, three bronzes, each engraved with the finishing rank and the size of the field. Pick a coin, or a medal below, to turn it over.
         </p>
       </div>
       <VaultIsland>
-        <VaultStage />
-        <MedalList />
+        <VaultLayout card={<article className={glassCard}><MedalDetail f={medals[0]} /></article>} />
+        <MedalList selected={0} />
       </VaultIsland>
     </section>
   );

@@ -123,6 +123,33 @@
   p { text-wrap: pretty; }
 }
 
+/* Work drawings: shapes draw in with the figure's own scroll position. Browsers without
+   scroll-driven animations (and reduced motion) get the finished drawing. */
+.art .draw { stroke-dasharray: 1; }
+.art .packet { stroke-dasharray: 0.04 0.96; animation: flow 2.8s linear infinite; }
+@keyframes flow { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes art-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes art-pop { from { transform: scale(0.3); } }
+@supports (animation-timeline: view()) {
+  .art { view-timeline: --art block; }
+  .art .draw {
+    animation: art-draw linear both;
+    animation-timeline: --art;
+    animation-range: entry calc(10% + var(--d, 0) * 6%) cover calc(40% + var(--d, 0) * 6%);
+  }
+  .art .pop {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: art-pop linear both;
+    animation-timeline: --art;
+    animation-range: entry calc(5% + var(--d, 0) * 7%) cover calc(30% + var(--d, 0) * 7%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .art .draw, .art .pop, .art .packet { animation: none !important; }
+  .art .packet { display: none; }
+}
+
 /* Scroll snap is switched on only while the crowd is on screen (crowd-section.tsx). */
 html.snap-crowd { scroll-snap-type: y mandatory; }
 

@@ -1,4 +1,4 @@
-import { NOW, roles, type Role } from "@/lib/data";
+import { NOW, roleSpan, roles, type Role } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 const X0 = 2020;
@@ -35,7 +35,7 @@ export function RoleList({ open, onToggle, panel = staticPanel }: { open: number
     <ol className="mt-12 list-none p-0 [perspective:1400px]">
       {roles.map((r, i) => {
         const isOpen = open.includes(i);
-        const end = Math.min(r.to === null ? NOW : r.to + 1, NOW);
+        const [start, end] = roleSpan(r);
         return (
           <li key={r.title} className="border-t border-border last:border-b">
             <h3 className="m-0">
@@ -54,7 +54,7 @@ export function RoleList({ open, onToggle, panel = staticPanel }: { open: number
                 <span aria-hidden="true" className="relative col-span-2 row-start-3 block h-2 rounded-full bg-muted md:col-span-1 md:row-start-1">
                   <span
                     className={cn("absolute inset-y-0 rounded-full", r.track === "freelance" ? "bg-role-freelance" : "bg-role-employed")}
-                    style={{ left: `${at(r.from)}%`, width: `${at(end) - at(r.from)}%` }}
+                    style={{ left: `${at(start)}%`, width: `${at(end) - at(start)}%` }}
                   />
                 </span>
                 <span aria-hidden="true" className={cn("col-start-2 row-start-1 grid size-9 place-items-center rounded-full border border-border text-lg transition-transform md:col-start-4", isOpen && "rotate-45")}>+</span>

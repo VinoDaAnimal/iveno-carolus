@@ -56,5 +56,5 @@ Gained critical skills in data analytics and machine learning. Contributed to da
 
 - Q2 resolved in about.md.
 - Q7 resolved: freelance is still active (parallel track).
-- Dates are year-only; the career line will be plotted at year resolution. Deferred by Iveno (2026-10-31): start/end months for finer placement.
+- Dates are year-only, except Iveno confirmed (2026-10-31) he left Spirit Invest early 2026 and started at SeedGrowth straight after; the charts plot that handover. Deferred by Iveno (2026-10-31): start/end months for finer placement.
 - Q6 resolved: "AWS and" removed from the SeedGrowth description.
