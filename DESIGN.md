@@ -78,7 +78,28 @@ Motion setup: `LazyMotion strict` with features loaded by `import("./motion-feat
 
 ## Lighthouse
 
-Pending: measured on the deployed host with PageSpeed Insights after the first deploy.
+Measured on the deployed host with the PageSpeed Insights web UI (the anonymous API was over its daily quota), mobile, a single run on commit `bd89324`:
+
+| Performance | Accessibility | Best Practices | SEO |
+|---|---|---|---|
+| 98 | 100 | 100 | 100 |
+
+Conditions: https://vinodaanimal.github.io/iveno-carolus/, 2026-10-31 19:50 SAST, Lighthouse 13.6.0, emulated Moto G Power, Slow 4G throttling, HeadlessChromium 153. Report: https://pagespeed.web.dev/analysis/https-vinodaanimal-github-io-iveno-carolus/10400to51c?form_factor=mobile
+
+| Metric | Value |
+|---|---|
+| First Contentful Paint | 1.1 s |
+| Largest Contentful Paint | 1.1 s |
+| Total Blocking Time | 90 ms |
+| Cumulative Layout Shift | 0 |
+| Speed Index | 4.1 s |
+
+Notes, honestly:
+
+- This is one run. Expect a few points of variance.
+- Speed Index is the weakest metric. On a phone the crowd section starts within 600px of the fold, so three.js and the WebGL scene load during the test. That's also most of the 134 KiB "unused JavaScript" PSI reports.
+- GitHub Pages sets a 10-minute cache lifetime that the repo can't change (PSI's "efficient cache lifetimes" item).
+- The site has no `robots.txt` at the domain root (`vinodaanimal.github.io/robots.txt` is 404). It's a project site, so its own `/iveno-carolus/robots.txt` only documents the sitemap.
 
 ## Accessibility notes
 
