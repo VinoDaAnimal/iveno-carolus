@@ -83,6 +83,7 @@ export function createMedalScene(
   font: string,
   reduce: boolean,
   onPick: (i: number) => void,
+  onReady: () => void,
 ) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2));
@@ -123,7 +124,7 @@ export function createMedalScene(
       new THREE.Mesh(back, new THREE.MeshStandardMaterial({ ...metal, map: bFace, bumpMap: bFace, bumpScale: 3 })),
     );
     coin.children.forEach((c) => (c.userData.i = i));
-    coin.userData = { i, medal: f.medal, flip: 0, drop: reduce ? 0 : 6 + i * 0.5, home: new THREE.Vector3() };
+    coin.userData = { i, medal: f.medal, flip: 0, home: new THREE.Vector3() };
     scene.add(coin);
     return coin;
   });
@@ -131,6 +132,8 @@ export function createMedalScene(
   let selected = 0;
   let visible = false;
   let frame = 0;
+  let shown = -1; // time the stage first became visible, for the drop-in
+  let ready = false;
   const camX = { cur: 0, target: 0 };
   const GAP_ROW = 2.35;
 
@@ -176,22 +179,28 @@ export function createMedalScene(
     frame = 0;
     if (!visible) return;
     timer.update();
-    const dt = Math.min(timer.getDelta(), 0.05), t = timer.getElapsed();
+    // Generous cap: slow phones get bigger steps instead of a stalled scene.
+    const dt = Math.min(timer.getDelta(), 0.25), t = timer.getElapsed();
     const k = reduce ? 1 : 1 - Math.pow(0.02, dt);
+    if (shown < 0) shown = t;
+    // Drop-in on elapsed time, not frames: finished 1.1s after the stage is first seen.
     camX.cur += (camX.target - camX.cur) * k;
     camera.position.x = camX.cur;
     camera.lookAt(camX.cur, 0, 0);
     sweep.position.set(camX.cur + Math.sin(t * 0.5) * 6, Math.cos(t * 0.3) * 2, 3);
     for (const m of coins) {
       const u = m.userData;
-      u.drop += (0 - u.drop) * k * 0.6;
+      const p = reduce ? 1 : Math.min(1, (t - shown - u.i * 0.06) / 0.8);
+      const drop = p <= 0 ? 6 : 6 * Math.pow(1 - p, 3);
       // Rarity reads as motion: golds sway, silvers stir, bronzes rest.
       const sway = reduce ? 0 : u.medal === "gold" ? Math.sin(t * 0.8 + u.i) * 0.32 : u.medal === "silver" ? Math.sin(t * 0.6 + u.i) * 0.14 : 0;
       u.flip += ((u.i === selected ? Math.PI : 0) - u.flip) * k;
       m.rotation.y = u.flip + sway;
-      m.position.set(u.home.x, u.home.y + u.drop, u.i === selected ? 0.6 : 0);
+      m.position.set(u.home.x, u.home.y + drop, u.i === selected ? 0.6 : 0);
     }
     renderer.render(scene, camera);
+    // Hand over from the CSS placeholder once the coins have landed.
+    if (!ready && t - shown > 0.9) { ready = true; onReady(); }
     frame = requestAnimationFrame(tick);
   }
 

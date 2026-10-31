@@ -6,6 +6,7 @@ import * as m from "motion/react-m";
 import { MotionProvider } from "@/components/motion-provider";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ShineBorder } from "@/components/ui/shine-border";
+import { CoinPlaceholder } from "@/components/vault/coin-placeholder";
 import { MedalDetail, glassCard } from "@/components/vault/medal-detail";
 import { MedalList, VaultLayout } from "@/components/vault/medal-list";
 import { medals } from "@/lib/data";
@@ -25,6 +26,7 @@ function VaultClient() {
   const [selected, setSelectedRaw] = useState(0);
   // The swipe hint stays until the visitor moves through the medals once (it comes back on every visit).
   const [moved, setMoved] = useState(false);
+  const [ready, setReady] = useState(false);
   const setSelected = (i: number) => { setMoved(true); setSelectedRaw(Math.max(0, Math.min(medals.length - 1, i))); };
   const selectedRef = useRef(selected);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -47,6 +49,7 @@ function VaultClient() {
           getComputedStyle(document.body).fontFamily,
           matchMedia("(prefers-reduced-motion: reduce)").matches,
           (i) => { setMoved(true); setSelectedRaw(Math.max(0, Math.min(medals.length - 1, i))); },
+          () => setReady(true),
         );
         sceneRef.current.select(selectedRef.current);
       } catch {
@@ -74,6 +77,7 @@ function VaultClient() {
         stage={
           <>
             <canvas ref={canvasRef} aria-hidden="true" className="block size-full cursor-pointer" />
+            {!ready && <CoinPlaceholder f={f} />}
             {[-1, 1].map((d) => (
               <button
                 key={d}

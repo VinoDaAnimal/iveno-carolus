@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { VaultIsland } from "@/components/islands";
+import { CoinPlaceholder } from "@/components/vault/coin-placeholder";
 import { MedalDetail, glassCard } from "@/components/vault/medal-detail";
 import { MedalList, VaultLayout } from "@/components/vault/medal-list";
 import { inWords, medalCount, medals } from "@/lib/data";
@@ -35,7 +36,7 @@ export function VaultSection() {
         </p>
       </div>
       <VaultIsland>
-        <VaultLayout card={<article className={glassCard}><MedalDetail f={medals[0]} /></article>} />
+        <VaultLayout stage={<CoinPlaceholder f={medals[0]} />} card={<article className={glassCard}><MedalDetail f={medals[0]} /></article>} />
         <MedalList selected={0} />
       </VaultIsland>
     </section>
