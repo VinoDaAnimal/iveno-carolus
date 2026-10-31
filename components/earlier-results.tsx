@@ -3,8 +3,9 @@ import { unranked } from "@/lib/data";
 
 export function EarlierResults() {
   return (
-    <section aria-labelledby="earlier-h" className="snap-start border-b border-border">
-      <div className="mx-auto max-w-6xl px-4 py-14 md:px-8">
+    <section aria-labelledby="earlier-h" className="snap-start">
+      {/* Bottom padding leaves room for the Zindi banner that straddles into this section. */}
+      <div className="mx-auto max-w-6xl px-4 pb-40 pt-14 md:px-8 md:pb-52">
         <h2 id="earlier-h" className="text-2xl font-bold tracking-[-0.02em]">Other ranked entries</h2>
         <p className="mt-2 max-w-prose text-muted-foreground">
           Two more Zindi results with a published percentile but no medal. The rank itself wasn’t recorded, so the marker sits at the percentile.

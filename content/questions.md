@@ -1,6 +1,6 @@
 # Questions for Iveno
 
-Answers recorded 2026-10-31. Q11–Q13 are new and still open.
+Answers recorded 2026-10-31. All questions resolved.
 
 ## Q1. Which headline leads?
 
@@ -36,7 +36,7 @@ Answer: Still active. Shown as a parallel track on the career line.
 
 Answer: Iveno supplied the medalled competitions (see `competitions.md`) and wants a striking, game-like "rare achievement" section with percentages and medals.
 
-Follow-up: every competition you listed is on **Zindi**, none on Kaggle. About paragraph 3 says "(Zindi, Kaggle)". Keep "Kaggle" there, or change to "(Zindi)"? Answer: TODO(Iveno)
+Follow-up: every competition listed is on Zindi, but About says "(Zindi, Kaggle)". Answer: keep "Kaggle". Resolved.
 
 ## Q9. Third image in `img/`
 
@@ -50,12 +50,12 @@ Pages source switched to **GitHub Actions** by Iveno (2026-10-31). Resolved.
 
 ## Q11. Olympics field size (new)
 
-The old site says "10th out of 137 teams (85-90% accuracy)". Your list says "Ranked 10/30". That's top 7.3% versus top 33.3%. Which is right? Maybe 137 teams entered and 30 were ranked on the final leaderboard? Answer: TODO(Iveno)
+The old site says "10th out of 137 teams (85-90% accuracy)". Your list says "Ranked 10/30". That's top 7.3% versus top 33.3%. Answer: **137** entrants. 10th of 137, top 7.3%. Resolved.
 
 ## Q12. GeoAI stray number (new)
 
-After "Ranked 168/604" there's a "123". Is that a typo, or something to show (points, a team count)? Answer: TODO(Iveno)
+After "Ranked 168/604" there's a "123". Answer: the result is 168 of 604; "123" is dropped. Resolved.
 
 ## Q13. Prize pools (new)
 
-Each entry lists a prize pool (e.g. R250 000 ZAR). That's the competition's pool, not money you won. Show it as "Prize pool: …", or leave it off so nobody misreads it? Answer: TODO(Iveno)
+Each entry lists a prize pool (e.g. R250 000 ZAR). That's the competition's pool, not money you won. Answer: show them, labelled "Prize pool". "Knowledge" competitions show as "Knowledge competition". Resolved.

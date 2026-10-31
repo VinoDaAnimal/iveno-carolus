@@ -12,6 +12,7 @@ test("topPct for the supplied medal results", () => {
   assert.equal(topPct(13, 288), 4.5);
   assert.equal(topPct(25, 251), 10);
   assert.equal(topPct(168, 604), 27.8);
+  assert.equal(topPct(10, 137), 7.3); // Olympics, field confirmed as 137 (Q11)
 });
 
 test("topPct rejects impossible finishes", () => {

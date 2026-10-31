@@ -102,7 +102,7 @@ function VaultClient() {
                 </dl>
                 <FieldStrip field={f.field} position={slotCentre(f.rank, f.field)} medal={f.medal} className="mt-3 [--background:var(--vault)] [--tick:var(--vault-edge)] [--foreground:var(--vault-foreground)]" />
                 <p className="mt-3 text-sm text-vault-muted">{f.tags.join(", ")}</p>
-                {f.pending && <p className="mt-1 text-sm text-vault-muted">{f.pending}</p>}
+                <p className="mt-1 text-sm text-vault-muted">{f.prize.startsWith("Knowledge") ? f.prize : `Prize pool: ${f.prize}`}</p>
                 <a href={f.url} className="mt-3 inline-block font-semibold text-vault-foreground underline underline-offset-4">View the competition on Zindi</a>
               </m.article>
             )}

@@ -1,4 +1,4 @@
-// Every value here is copied from content/*.md. Nothing is invented; open items are marked `pending`.
+// Every value here is copied from content/*.md. Nothing is invented.
 
 export type Medal = "gold" | "silver" | "bronze";
 
@@ -11,19 +11,19 @@ export type MedalResult = {
   medal: Medal;
   rank: number;
   field: number;
-  /** Field size disputed (questions.md Q11). */
-  pending?: string;
+  /** As listed on Zindi; the competition's pool, not Iveno's winnings. */
+  prize: string;
 };
 
 export const medals: MedalResult[] = [
-  { id: "trust", name: "The African Trust & Safety LLM Challenge", question: "Can Africa’s AI withstand its own linguistic and cultural complexity?", url: "https://zindi.world/competitions/the-african-trust-safety-llm-challenge", tags: ["Prompt Engineering", "AI Trust and Safety", "Safety", "Trust"], medal: "gold", rank: 13, field: 288 },
-  { id: "sendy", name: "EDSA 2020: Sendy Logistics Challenge", question: "Predict the estimated time of arrival (ETA) for motorbike deliveries in Nairobi", url: "https://zindi.world/competitions/edsa-sendy-logistics-challenge", tags: ["Prediction", "Logistics", "Supply Chain Optimization", "Fleet Management"], medal: "gold", rank: 4, field: 159 },
-  { id: "nedbank", name: "Nedbank Transaction Volume Forecasting Challenge", question: "Can you turn behavioural signals into accurate transaction forecasts?", url: "https://zindi.world/competitions/nedbank-transaction-volume-forecasting-challenge", tags: ["Feature Engineering", "Time-series", "Forecast"], medal: "gold", rank: 25, field: 251 },
-  { id: "trail", name: "Trailblazers Qualification Challenge", question: "Build a model and complete your Zindi profile to qualify as a Trailblazer", url: "https://zindi.world/competitions/be-a-trailblazer", tags: ["Prediction"], medal: "silver", rank: 42, field: 259 },
-  { id: "crypto", name: "Cryptocurrency Closing Price Prediction", question: "Can you predict the closing price for a cryptocurrency?", url: "https://zindi.world/competitions/cryptocurrency-closing-price-prediction", tags: ["Prediction", "Cryptocurrency", "Financial Services"], medal: "silver", rank: 64, field: 323 },
-  { id: "vacc", name: "EDSA: To Vaccinate or Not to Vaccinate: It’s not a Question", question: "Analysing social media sentiment towards vaccines", url: "https://zindi.world/competitions/edsa-to-vaccinate-or-not-to-vaccinate-its-not-a-question", tags: ["Natural Language Processing", "Classification", "Sentiment Analysis"], medal: "bronze", rank: 51, field: 193 },
-  { id: "geo", name: "GeoAI Aquaculture Pond Identification Challenge", question: "Can you identify aquaculture ponds from space?", url: "https://zindi.world/competitions/geoai-aquaculture-pond-identification-challenge", tags: ["Classification", "GIS", "Agriculture"], medal: "bronze", rank: 168, field: 604 },
-  { id: "olympics", name: "Olympic 2024 Medal Prediction Challenge", question: "Can you predict the medal count for each country in the Paris 2024 Olympics?", url: "https://zindi.world/competitions/olympic-2024-medal-prediction-challenge", tags: ["Forecast", "Sport"], medal: "bronze", rank: 10, field: 30, pending: "Field size to confirm: the old site said 10th of 137 teams." },
+  { id: "trust", name: "The African Trust & Safety LLM Challenge", question: "Can Africa’s AI withstand its own linguistic and cultural complexity?", url: "https://zindi.world/competitions/the-african-trust-safety-llm-challenge", tags: ["Prompt Engineering", "AI Trust and Safety", "Safety", "Trust"], medal: "gold", rank: 13, field: 288, prize: "$5 000 USD" },
+  { id: "sendy", name: "EDSA 2020: Sendy Logistics Challenge", question: "Predict the estimated time of arrival (ETA) for motorbike deliveries in Nairobi", url: "https://zindi.world/competitions/edsa-sendy-logistics-challenge", tags: ["Prediction", "Logistics", "Supply Chain Optimization", "Fleet Management"], medal: "gold", rank: 4, field: 159, prize: "Knowledge competition" },
+  { id: "nedbank", name: "Nedbank Transaction Volume Forecasting Challenge", question: "Can you turn behavioural signals into accurate transaction forecasts?", url: "https://zindi.world/competitions/nedbank-transaction-volume-forecasting-challenge", tags: ["Feature Engineering", "Time-series", "Forecast"], medal: "gold", rank: 25, field: 251, prize: "R250 000 ZAR" },
+  { id: "trail", name: "Trailblazers Qualification Challenge", question: "Build a model and complete your Zindi profile to qualify as a Trailblazer", url: "https://zindi.world/competitions/be-a-trailblazer", tags: ["Prediction"], medal: "silver", rank: 42, field: 259, prize: "1 000 Zindi Points" },
+  { id: "crypto", name: "Cryptocurrency Closing Price Prediction", question: "Can you predict the closing price for a cryptocurrency?", url: "https://zindi.world/competitions/cryptocurrency-closing-price-prediction", tags: ["Prediction", "Cryptocurrency", "Financial Services"], medal: "silver", rank: 64, field: 323, prize: "$1 000 USD" },
+  { id: "vacc", name: "EDSA: To Vaccinate or Not to Vaccinate: It’s not a Question", question: "Analysing social media sentiment towards vaccines", url: "https://zindi.world/competitions/edsa-to-vaccinate-or-not-to-vaccinate-its-not-a-question", tags: ["Natural Language Processing", "Classification", "Sentiment Analysis"], medal: "bronze", rank: 51, field: 193, prize: "Knowledge competition" },
+  { id: "geo", name: "GeoAI Aquaculture Pond Identification Challenge", question: "Can you identify aquaculture ponds from space?", url: "https://zindi.world/competitions/geoai-aquaculture-pond-identification-challenge", tags: ["Classification", "GIS", "Agriculture"], medal: "bronze", rank: 168, field: 604, prize: "1000 CHF" },
+  { id: "olympics", name: "Olympic 2024 Medal Prediction Challenge", question: "Can you predict the medal count for each country in the Paris 2024 Olympics?", url: "https://zindi.world/competitions/olympic-2024-medal-prediction-challenge", tags: ["Forecast", "Sport"], medal: "bronze", rank: 10, field: 137, prize: "3 000 Zindi Points" },
 ];
 
 /** Best finish first: the order the crowd is walked in. */
@@ -32,7 +32,7 @@ export const medalsByFinish = [...medals].sort((a, b) => a.rank / a.field - b.ra
 /** Old-site results with a published percentile but no rank or medal. */
 export const unranked = [
   { id: "insurance", name: "Insurance Prediction Challenge", topPct: 10.64, field: 621, unit: "active participants", note: "Nov 2019 - Present" },
-  { id: "beam", name: "Spatio-Temporal Beam-Level Traffic Forecasting Challenge", topPct: 18.7, field: 171, unit: "participants", note: "Jul 2024 - Oct 2024" },
+  { id: "beam", name: "Spatio-Temporal Beam-Level Traffic Forecasting Challenge", topPct: 18.7, field: 171, unit: "participants", note: "Jul 2024 - Oct 2024, prize pool 12 000 CHF" },
 ];
 
 export type Role = {
@@ -87,7 +87,6 @@ export const skills = [
 export const about = [
   "Iveno Carolus is a seasoned Data Professional and Python Developer with over 10 years of experience in Python development. His expertise spans machine learning, deep learning, data engineering, data analysis, and full-stack development. Starting coding at age 12 with a passion for intelligent software, Iveno has built a comprehensive skill set across the entire data science and ML pipeline.",
   "His professional journey showcases deep expertise in Python-based ML frameworks (TensorFlow, PyTorch, Scikit-learn) and data engineering tools. At Cavell Group, he developed complex web scraping pipelines and integrated LLMs for advanced data processing. His work at Sprout Performance Partners involved sophisticated data analysis and automation using GCP. He is now an Analytics Engineer at SeedGrowth Analytics, after leading data-driven initiatives in finance as Business Intelligence Manager at Spirit Invest.",
-  // TODO(Iveno): Q8 follow-up: keep "Kaggle" here? Every supplied competition is on Zindi.
   "As a freelance developer, Iveno has successfully delivered full-stack applications combining ML capabilities with modern web technologies. His competitive programming achievements in ML competitions (Zindi, Kaggle) validate his technical prowess and problem-solving abilities in real-world machine learning challenges.",
 ];
 

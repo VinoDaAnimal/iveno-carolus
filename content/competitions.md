@@ -1,6 +1,6 @@
 # Competitions (supplied by Iveno, 2026-10-31)
 
-Copied from Iveno's message. Percentile = rank ÷ field × 100, computed (not stated). Prize figures are each competition's prize pool as listed on Zindi, not money Iveno won; show them only labelled that way, or not at all.
+Copied from Iveno's message. Percentile = rank ÷ field × 100, computed (not stated). Prize figures are each competition's prize pool as listed on Zindi, not money Iveno won; the site labels them "Prize pool" (Q13).
 
 ## Medalled
 
@@ -12,7 +12,7 @@ Copied from Iveno's message. Percentile = rank ÷ field × 100, computed (not st
 | Cryptocurrency Closing Price Prediction | — | https://zindi.world/competitions/cryptocurrency-closing-price-prediction | Good for beginners, Prediction, Cryptocurrency, Financial Services | $1 000 USD | Silver | 64 | 323 | 19.81 |
 | Trailblazers Qualification Challenge | — | https://zindi.world/competitions/be-a-trailblazer | Good for beginners, Prediction | 1 000 Zindi Points | Silver | 42 | 259 | 16.22 |
 | GeoAI Aquaculture Pond Identification Challenge | FAO and ITU | https://zindi.world/competitions/geoai-aquaculture-pond-identification-challenge | Good for beginners, Data Analysis, Classification, Feature Engineering, GIS, Agriculture | 1000 CHF | Bronze | 168 | 604 | 27.81 |
-| Olympic 2024 Medal Prediction Challenge | — | https://zindi.world/competitions/olympic-2024-medal-prediction-challenge | Intermediate, Forecast, Sport | 3 000 Zindi Points | Bronze | 10 | 30 | 33.33 |
+| Olympic 2024 Medal Prediction Challenge | — | https://zindi.world/competitions/olympic-2024-medal-prediction-challenge | Intermediate, Forecast, Sport | 3 000 Zindi Points | Bronze | 10 | 137 | 7.30 |
 | EDSA: To Vaccinate or Not to Vaccinate: It's not a Question | EXPLORE Data Science Academy | https://zindi.world/competitions/edsa-to-vaccinate-or-not-to-vaccinate-its-not-a-question | Good for beginners, Natural Language Processing, Classification, Sentiment Analysis, Health, Media | Knowledge | Bronze | 51 | 193 | 26.42 |
 
 Subtitles (as given):
@@ -40,7 +40,7 @@ Not in the new list but on the old site: Insurance Prediction Challenge | Zindi,
 
 ## Open
 
-- Olympics: new list says 10/30, old site says "10th out of 137 teams". See `questions.md` Q11.
-- GeoAI has a stray "123" after "168/604". See Q12.
-- All of these are Zindi, none Kaggle. See Q8.
-- No dates for the new competitions. TODO(Iveno): month/year for each, only if they should sit on the career line.
+- Olympics field size: 137 (Q11, confirmed by Iveno; his list said 10/30).
+- GeoAI: 168/604; the stray "123" is dropped (Q12).
+- All of these are Zindi; About keeps "(Zindi, Kaggle)" at Iveno's request (Q8).
+- No dates for the new competitions. Deferred by Iveno (2026-10-31): month/year for each, only if they should sit on the career line.

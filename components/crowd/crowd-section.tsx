@@ -35,7 +35,6 @@ export function CrowdSection() {
               <p className="mt-1 font-semibold">Top {topPct(f.rank, f.field)}% of the final leaderboard</p>
               <FieldStrip field={f.field} position={slotCentre(f.rank, f.field)} medal={f.medal} className="mt-4" />
               <p className="mt-1 flex justify-between text-xs text-muted-foreground"><span>1st</span><span>{ordinal(f.field)}</span></p>
-              {f.pending && <p className="mt-2 text-sm text-muted-foreground">{f.pending}</p>}
             </article>
           </div>
         ))}

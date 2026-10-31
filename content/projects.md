@@ -102,5 +102,5 @@ The Olympics percentile (7.30%) is computed, not stated on the site. Implied ran
 - Olympics field size conflicts with the new list (137 vs 30): see `questions.md` Q11.
 - Full medal data now in `competitions.md`.
 - Platform for the Beam-Level and Olympics competitions isn't stated: see `questions.md` Q8.
-- TODO(Iveno): links for any project (competition leaderboard, repo, live app). None exist on the live site.
+- Deferred by Iveno (2026-10-31): links for any project (competition leaderboard, repo, live app). None exist on the live site.
 - "85-90% accuracy" on the Olympics project: TODO(Iveno): what metric/how measured, if it is to be shown on a chart.

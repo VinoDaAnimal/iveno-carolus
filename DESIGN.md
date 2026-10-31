@@ -4,7 +4,7 @@
 
 Chosen by Iveno on 2026-10-31 from two prototypes (A: dark full-3D "Vault", B: light 2D "Leaderboard"). The build is B's light base and charts, plus two WebGL moments taken from A and reshaped by his feedback:
 
-1. **The crowd** (proof): every entrant in his eight medal-winning Zindi competitions as a block, 2,107 in total, one lane per competition, first place in the front row. Each wheel scroll moves the camera to the next competition and a card with the result swishes into the top-left corner. One more scroll after the last card moves on.
+1. **The crowd** (proof): every entrant in his eight medal-winning Zindi competitions as a block, 2,214 in total, one lane per competition, first place in the front row. Each wheel scroll moves the camera to the next competition and a card with the result swishes into the top-left corner. One more scroll after the last card moves on.
 2. **The medal vault**: eight 3D coins engraved with rank and field size. Golds sway, silvers stir, bronzes rest. Picking a coin flips it and raises a translucent card with the competition brief and his numbers.
 
 **Why it fits a data scientist.** The site is itself a piece of data work. Each result is shown against its field (a dot on a leaderboard, a block in a crowd), not as a bare percentage. Every chart has axes or labelled ends, real values, a caption and a hidden table. The career timeline is a Gantt chart at the resolution the data actually has (whole years), and it says so in its caption instead of inventing months.
@@ -110,12 +110,8 @@ Notes, honestly:
 
 ## Remaining TODOs
 
-See `content/questions.md`:
+All questions in `content/questions.md` are answered (2026-10-31). Deferred by Iveno for later:
 
-- Q11 Olympics field size (30 or 137)
-- Q12 GeoAI stray "123"
-- Q13 prize pools
-- Q8 "Kaggle" in the About text
-- Zindi banner file (`public/images/zindi-on-the-leaderboard.png`)
 - Dates for the newer competitions, if they should sit on the career chart
 - Project links (repos, live apps, leaderboards)
+- What the Olympics "85-90% accuracy" measures (not shown on the site)
