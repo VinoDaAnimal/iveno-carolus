@@ -40,8 +40,8 @@ export function MedalList({ selected, onSelect }: { selected: number; onSelect?:
 /** Coins beside the card on wide screens, above it on phones. Same box in the static HTML and the island. */
 export function VaultLayout({ stage, card }: { stage?: React.ReactNode; card: React.ReactNode }) {
   return (
-    <div className="mx-auto mt-8 grid max-w-6xl gap-4 px-4 md:px-8 lg:mt-4 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-8">
-      <div className="relative h-[min(42svh,20rem)] touch-pan-y lg:h-[34rem]">{stage}</div>
+    <div className="mx-auto mt-4 grid max-w-6xl gap-3 px-4 md:px-8 lg:mt-4 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-8">
+      <div className="relative h-[min(30svh,14rem)] touch-pan-y sm:h-[20rem] lg:h-[34rem]">{stage}</div>
       <div aria-live="polite">{card}</div>
     </div>
   );

@@ -4,8 +4,8 @@
 
 Chosen by Iveno on 2026-10-31 from two prototypes (A: dark full-3D "Vault", B: light 2D "Leaderboard"). The build is B's light base and charts, plus two WebGL moments taken from A and reshaped by his feedback:
 
-1. **The crowd** (proof): every entrant in his eight medal-winning Zindi competitions as a block, 2,214 in total, one lane per competition, first place in the front row. Each wheel scroll moves the camera to the next competition and a card with the result swishes into the top-left corner. One more scroll after the last card moves on.
-2. **The medal vault**: eight 3D coins engraved with rank and field size. Golds sway, silvers stir, bronzes rest. Picking a coin flips it and raises a translucent card with the competition brief and his numbers.
+1. **The crowd** (proof): every entrant in his nine medal-winning Zindi competitions as a block, 2,385 in total, one lane per competition, first place in the front row. Each wheel scroll moves the camera to the next competition and a card with the result swishes into the top-left corner. One more scroll after the last card moves on.
+2. **The medal vault**: nine 3D coins engraved with rank and field size. Golds sway, silvers stir, bronzes rest. Picking a coin flips it and raises a translucent card with the competition brief and his numbers.
 
 **Why it fits a data scientist.** The site is itself a piece of data work. Each result is shown against its field (a dot on a leaderboard, a block in a crowd), not as a bare percentage. Every chart has axes or labelled ends, real values, a caption and a hidden table. The career timeline is a Gantt chart at the resolution the data actually has (whole years), and it says so in its caption instead of inventing months.
 
@@ -50,7 +50,7 @@ Schibsted Grotesk, variable, loaded with `next/font` (one woff2, Latin subset, w
 | `components/ui/shine-border.tsx` | Magic UI [shine-border](https://magicui.design/r/shine-border.json) | Original animates `background-position`. Rebuilt as a rotating two-lobed gradient; silver tokens |
 | Coin flip and tilt idea | Aceternity [3d-card](https://ui.aceternity.com/registry/3d-card.json) | Read for the pointer-tilt maths in prototype B; the build flips coins in three.js instead |
 | Rejected | Aceternity [card-spotlight](https://ui.aceternity.com/registry/card-spotlight.json) (pulls in three.js + R3F); Magic UI [number-ticker](https://magicui.design/r/number-ticker.json) (spring-based) | |
-| Work drawings, skills stack | Written by hand: `work-art.tsx` (schematic SVGs, no data implied), `skills.tsx` (CSS 3D, radio inputs; "where it shows up" is a text match against the roles, projects and the current-role tools Iveno named) | |
+| Work drawings, skills stack | Written by hand: `work-art.tsx` (schematic SVGs, no data implied), `skills.tsx` (CSS 3D filing cabinet, radio inputs; "where it shows up" is a text match against the roles, projects and the current-role tools Iveno named) | |
 | Charts | Written by hand: `career-chart.tsx` (HTML/CSS Gantt), `field-strip.tsx` (SVG ticks + HTML marker), `crowd/crowd-scene.ts`, `vault/medal-scene.ts` (three.js 0.187) | |
 
 21st.dev's registry returned 403 without an API key on 2026-10-31, so nothing is taken from it directly.
@@ -65,10 +65,10 @@ Schibsted Grotesk, variable, loaded with `next/font` (one woff2, Latin subset, w
 | Result card swish | Crowd | `useAnimate` from `motion/react-mini` (WAAPI), `transform` from an offset, never from hidden | none |
 | Medal blocks rise | Crowd | three.js scale | final height |
 | Camera frames each whole field in the space the card leaves free (first place bottom-left); "1st" and "Iveno, nth" labels track the blocks | Crowd | three.js `setViewOffset` + fit search | camera cuts |
-| Coins drop in, sway by rarity, flip on pick; one row you can swipe on narrow stages, first medal turned over on load | Vault | three.js (lathe-turned body, raised rim, stamped faces with bump maps, laurel, loop) | placed, still, flip instant |
+| Coins drop in, sway by rarity, flip on pick; one swipeable row with previous/next arrows and a "swipe for more medals" hint until first use; first medal turned over on load | Vault | three.js (lathe-turned body, raised rim, stamped faces with bump maps, laurel, loop) | placed, still, flip instant |
 | Project drawings draw in with the figure's scroll position; packets flow along links | Work | CSS scroll-driven animations (`view-timeline`, `stroke-dashoffset`, `transform`), no JS | finished drawing, no flow |
 | 1,400,000 URLs counts up | Work (Cavell) | `requestAnimationFrame` | static |
-| Skill layer slides out of the stack | Skills | CSS 3D transforms + radio inputs, no JS | instant |
+| Skill folder slides out of the filing-cabinet pile (each lower folder a step further right so every name shows) | Skills | CSS 3D transforms + radio inputs, no JS | instant |
 | Glass card in/out | Vault | `m.article` + `AnimatePresence initial={false}`, `transform` + `clip-path` | instant (`MotionConfig reducedMotion="user"`) |
 | Gold beam / silver sheen | Vault card | CSS `rotate` | off |
 | Role unfolds on a top hinge | Experience | `m.div` `rotateX` + `clip-path`, `AnimatePresence initial={false}` | instant |
@@ -96,7 +96,6 @@ Notes, honestly:
 
 - three.js loads during the test, because on a phone the crowd starts within 600 px of the fold. That's most of PSI's ~133 KiB "unused JavaScript".
 - "Avoid non-composited animations" (diagnostic, unscored) lists the SVG stroke-dashoffset draws and hover colour transitions.
-- Each skill radio has two labels (the slab and its chip), so axe's "form fields with multiple labels" check comes back as needs-review. It's unscored, and both labels name the same layer.
 - GitHub Pages sets a 10-minute cache lifetime that the repo can't change.
 - The site has no `robots.txt` at the domain root (`vinodaanimal.github.io/robots.txt` is 404). It's a project site, so its own `/iveno-carolus/robots.txt` only documents the sitemap.
 

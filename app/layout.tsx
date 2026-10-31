@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Schibsted_Grotesk } from "next/font/google";
-import { person } from "@/lib/data";
+import { inWords, medals, person } from "@/lib/data";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -9,8 +9,9 @@ const schibsted = Schibsted_Grotesk({
   subsets: ["latin"],
 });
 
+const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 const description =
-  "Iveno Carolus, Data Professional & Python Developer and Analytics Engineer at SeedGrowth Analytics. Eight Zindi medals, a career from data science intern to analytics engineer, and a pipeline that scraped 1.4 million URLs.";
+  `Iveno Carolus, Data Professional & Python Developer and Analytics Engineer at SeedGrowth Analytics. ${cap(inWords(medals.length))} Zindi medals, a career from data science intern to analytics engineer, and a pipeline that scraped 1.4 million URLs.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

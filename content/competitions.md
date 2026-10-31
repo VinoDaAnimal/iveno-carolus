@@ -44,3 +44,7 @@ Not in the new list but on the old site: Insurance Prediction Challenge | Zindi,
 - GeoAI: 168/604; the stray "123" is dropped (Q12).
 - All of these are Zindi; About keeps "(Zindi, Kaggle)" at Iveno's request (Q8).
 - No dates for the new competitions. Deferred by Iveno (2026-10-31): month/year for each, only if they should sit on the career line.
+
+## Update 2026-10-31
+
+- Spatio-Temporal Beam-Level Traffic Forecasting Challenge by ITU: **Bronze** (confirmed by Iveno). No rank was supplied; the site shows **32nd of 171**, derived from the old site's "Top 18.7% (171 participants)" (32 is the only rank of 171 that rounds to 18.7%) and labelled as derived. TODO(Iveno): confirm the exact rank if it differs.

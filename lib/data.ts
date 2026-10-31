@@ -13,6 +13,8 @@ export type MedalResult = {
   field: number;
   /** As listed on Zindi; the competition's pool, not Iveno's winnings. */
   prize: string;
+  /** Shown under the numbers when a value is derived rather than stated. */
+  note?: string;
 };
 
 export const medals: MedalResult[] = [
@@ -23,8 +25,15 @@ export const medals: MedalResult[] = [
   { id: "crypto", name: "Cryptocurrency Closing Price Prediction", question: "Can you predict the closing price for a cryptocurrency?", url: "https://zindi.world/competitions/cryptocurrency-closing-price-prediction", tags: ["Prediction", "Cryptocurrency", "Financial Services"], medal: "silver", rank: 64, field: 323, prize: "$1 000 USD" },
   { id: "vacc", name: "EDSA: To Vaccinate or Not to Vaccinate: It’s not a Question", question: "Analysing social media sentiment towards vaccines", url: "https://zindi.world/competitions/edsa-to-vaccinate-or-not-to-vaccinate-its-not-a-question", tags: ["Natural Language Processing", "Classification", "Sentiment Analysis"], medal: "bronze", rank: 51, field: 193, prize: "Knowledge competition" },
   { id: "geo", name: "GeoAI Aquaculture Pond Identification Challenge", question: "Can you identify aquaculture ponds from space?", url: "https://zindi.world/competitions/geoai-aquaculture-pond-identification-challenge", tags: ["Classification", "GIS", "Agriculture"], medal: "bronze", rank: 168, field: 604, prize: "1000 CHF" },
+  // Bronze confirmed by Iveno (2026-10-31). Rank derived: 32 is the only rank of 171 that rounds to the old site's "Top 18.7%".
+  { id: "beam", name: "Spatio-Temporal Beam-Level Traffic Forecasting Challenge by ITU", question: "Can you forecast traffic throughput volumes within communication networks?", url: "https://zindi.world/competitions/spatio-temporal-beam-level-traffic-forecasting-challenge", tags: ["Forecast", "Networking", "Time Series Forecasting"], medal: "bronze", rank: 32, field: 171, prize: "12 000 CHF", note: "Rank derived from the published “Top 18.7% (171 participants)”." },
   { id: "olympics", name: "Olympic 2024 Medal Prediction Challenge", question: "Can you predict the medal count for each country in the Paris 2024 Olympics?", url: "https://zindi.world/competitions/olympic-2024-medal-prediction-challenge", tags: ["Forecast", "Sport"], medal: "bronze", rank: 10, field: 137, prize: "3 000 Zindi Points" },
 ];
+
+const WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+/** "nine", "three", … for counts in copy; falls back to digits. */
+export const inWords = (n: number) => WORDS[n] ?? String(n);
+export const medalCount = (m: Medal) => medals.filter((x) => x.medal === m).length;
 
 /** Best finish first: the order the crowd is walked in. */
 export const medalsByFinish = [...medals].sort((a, b) => a.rank / a.field - b.rank / b.field);
@@ -32,7 +41,6 @@ export const medalsByFinish = [...medals].sort((a, b) => a.rank / a.field - b.ra
 /** Old-site results with a published percentile but no rank or medal. */
 export const unranked = [
   { id: "insurance", name: "Insurance Prediction Challenge", topPct: 10.64, field: 621, unit: "active participants", note: "Nov 2019 - Present" },
-  { id: "beam", name: "Spatio-Temporal Beam-Level Traffic Forecasting Challenge", topPct: 18.7, field: 171, unit: "participants", note: "Jul 2024 - Oct 2024, prize pool 12 000 CHF" },
 ];
 
 export type Role = {
@@ -67,7 +75,7 @@ export const datedEntries = [
   { label: "Insurance Prediction Challenge, Nov 2019", at: 2019 + 10 / 12 },
   { label: "Cryptocurrency Closing Price Prediction, Jun 2021, silver", at: 2021 + 5 / 12, medal: "silver" as Medal },
   { label: "Trailblazers Qualification Challenge, Feb 2022, silver", at: 2022 + 1 / 12, medal: "silver" as Medal },
-  { label: "Spatio-Temporal Beam-Level Traffic Forecasting Challenge, Jul 2024", at: 2024 + 6 / 12 },
+  { label: "Spatio-Temporal Beam-Level Traffic Forecasting Challenge, Jul 2024, bronze", at: 2024 + 6 / 12, medal: "bronze" as Medal },
   { label: "Olympic 2024 Medal Prediction Challenge, Aug 2024, bronze", at: 2024 + 7 / 12, medal: "bronze" as Medal },
 ];
 

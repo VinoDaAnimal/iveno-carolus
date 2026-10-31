@@ -1,4 +1,4 @@
-import portrait from "@/public/images/iveno-carolus-portrait-cap-bw-960.jpg";
+import portrait from "@/public/images/iveno-carolus-portrait-suit-800.jpg";
 import { CopyEmail } from "@/components/copy-email";
 import { Year } from "@/components/year";
 import { contact, person } from "@/lib/data";

@@ -73,8 +73,8 @@ function wrap(text: string, max: number) {
 }
 
 /**
- * Eight struck medals: rank and field on the front, the competition on the back.
- * Wide stages show a 4 x 2 grid; narrow ones a single row centred on the selected medal.
+ * Struck medals: rank and field on the front, the competition on the back.
+ * One row centred on the selected medal; swipe or use the arrows to move along it.
  */
 export function createMedalScene(
   canvas: HTMLCanvasElement,
@@ -129,29 +129,19 @@ export function createMedalScene(
   });
 
   let selected = 0;
-  let row = false;
   let visible = false;
   let frame = 0;
   const camX = { cur: 0, target: 0 };
-  const GAP_GRID = 2.6, GAP_ROW = 2.35;
+  const GAP_ROW = 2.35;
 
   const layout = () => {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    row = camera.aspect < 1.25;
-    const half = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-    if (row) {
-      coins.forEach((m, i) => m.userData.home.set(i * GAP_ROW, 0, 0));
-      // Selected medal fills ~80% of the height; neighbours peek in at the sides.
-      camera.position.z = 1.55 / half;
-    } else {
-      const cols = 4, rows = 2;
-      coins.forEach((m, i) => m.userData.home.set((i % cols - (cols - 1) / 2) * GAP_GRID, -(Math.floor(i / cols) - (rows - 1) / 2) * GAP_GRID * 1.05, 0));
-      const span = Math.max((cols * GAP_GRID) / camera.aspect, rows * GAP_GRID * 1.1) * 0.56;
-      camera.position.z = span / half;
-    }
-    camX.target = row ? selected * GAP_ROW : 0;
+    // One row centred on the selected medal: it fills ~80% of the height and its neighbours peek in.
+    coins.forEach((m, i) => m.userData.home.set(i * GAP_ROW, 0, 0));
+    camera.position.z = 1.55 / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    camX.target = selected * GAP_ROW;
     if (reduce) camX.cur = camX.target;
     camera.updateProjectionMatrix();
   };
@@ -170,7 +160,7 @@ export function createMedalScene(
   const onDown = (e: PointerEvent) => { downX = e.clientX; downY = e.clientY; };
   const onUp = (e: PointerEvent) => {
     const dx = e.clientX - downX, dy = e.clientY - downY;
-    if (row && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { onPick(selected - Math.sign(dx)); return; }
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { onPick(selected - Math.sign(dx)); return; }
     if (Math.hypot(dx, dy) > 10) return;
     const r = canvas.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
@@ -208,7 +198,7 @@ export function createMedalScene(
   return {
     select(i: number) {
       selected = i;
-      camX.target = row ? i * GAP_ROW : 0;
+      camX.target = i * GAP_ROW;
     },
     dispose() {
       cancelAnimationFrame(frame);

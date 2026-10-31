@@ -3,10 +3,11 @@ import { join } from "node:path";
 import { VaultIsland } from "@/components/islands";
 import { MedalDetail, glassCard } from "@/components/vault/medal-detail";
 import { MedalList, VaultLayout } from "@/components/vault/medal-list";
-import { medals } from "@/lib/data";
+import { inWords, medalCount, medals } from "@/lib/data";
 import { basePath } from "@/lib/site";
 
 // Drop the banner into public/images and it appears on the next build.
+const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 const BANNER = "images/zindi-on-the-leaderboard.png";
 const hasBanner = existsSync(join(process.cwd(), "public", BANNER));
 
@@ -30,7 +31,7 @@ export function VaultSection() {
         )}
         <h2 id="vault-h" className="text-[clamp(2.25rem,6vw,4rem)] font-extrabold leading-none tracking-[-0.03em]">Zindi medal vault</h2>
         <p className="mt-3 max-w-xl text-vault-muted">
-          Three golds, two silvers, three bronzes, each engraved with the finishing rank and the size of the field. Pick a coin, or a medal below, to turn it over.
+          {cap(inWords(medalCount("gold")))} golds, {inWords(medalCount("silver"))} silvers, {inWords(medalCount("bronze"))} bronzes, each engraved with the finishing rank and the size of the field. Pick a coin, or a medal below, to turn it over.
         </p>
       </div>
       <VaultIsland>

@@ -1,7 +1,7 @@
 import { CrowdController } from "@/components/crowd/crowd-controller";
 import { FieldStrip } from "@/components/field-strip";
 import { MedalLabel } from "@/components/medal-label";
-import { medalsByFinish } from "@/lib/data";
+import { inWords, medalsByFinish } from "@/lib/data";
 import { ordinal, slotCentre, topPct } from "@/lib/rank";
 
 const totalEntrants = medalsByFinish.reduce((s, f) => s + f.field, 0);
@@ -23,7 +23,7 @@ export function CrowdSection() {
           <div data-card className={`${card} max-w-md`}>
             <h2 id="proof-h" className="text-[clamp(2rem,5vw,3.25rem)] font-extrabold leading-none tracking-[-0.03em]">Where he finished</h2>
             <p className="mt-3 text-muted-foreground">
-              Every entrant in the eight Zindi competitions where Iveno won a medal: {totalEntrants.toLocaleString("en-US")} blocks, one per place on the final leaderboard, first place in the front row. Eight of them are his. Scroll once per competition.
+              Every entrant in the {inWords(medalsByFinish.length)} Zindi competitions where Iveno won a medal: {totalEntrants.toLocaleString("en-US")} blocks, one per place on the final leaderboard, first place in the front row. {medalsByFinish.length} of them are his. Scroll once per competition.
             </p>
           </div>
         </div>

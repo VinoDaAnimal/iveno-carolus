@@ -41,12 +41,13 @@ export function createCrowdScene(
   const m4 = new THREE.Matrix4();
 
   const lanes: { bounds: THREE.Box3; first: THREE.Vector3; me: THREE.Mesh }[] = [];
-  // Fields sit in a 4 x 2 grid of equal cells (best finish front-left), so the overview reads on a phone too.
+  // Fields sit in a square-ish grid of equal cells (best finish front-left), so the overview reads on a phone too.
+  const PER = Math.ceil(Math.sqrt(fields.length));
   const CELL = Math.max(...fields.map((f) => Math.ceil(Math.sqrt(f.field)))) + GAP;
   let n = 0;
   fields.forEach((f, i) => {
-    const x0 = (i % 4) * CELL;
-    const z0 = -Math.floor(i / 4) * CELL;
+    const x0 = (i % PER) * CELL;
+    const z0 = -Math.floor(i / PER) * CELL;
     const cols = Math.ceil(Math.sqrt(f.field));
     const rows = Math.ceil(f.field / cols);
     let me!: THREE.Mesh;
@@ -71,7 +72,7 @@ export function createCrowdScene(
   });
   scene.add(crowd);
   // Centre the whole crowd on the origin.
-  const shift = new THREE.Vector3(-(4 * CELL - GAP) / 2, 0, CELL / 2);
+  const shift = new THREE.Vector3(-(PER * CELL - GAP) / 2, 0, CELL / 2);
   scene.children.forEach((o) => { if (o instanceof THREE.Mesh || o instanceof THREE.InstancedMesh) o.position.add(shift); });
   lanes.forEach((l) => { l.bounds.translate(shift); l.first.add(shift); });
   const all = lanes.reduce((b, l) => b.union(l.bounds), new THREE.Box3());

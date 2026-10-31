@@ -113,6 +113,7 @@
 /* Entrance: transform only, so text is at full contrast even if it never plays. */
 @keyframes rise { from { transform: translateY(0.35em); } }
 @keyframes grow { from { transform: scaleX(0); } }
+@keyframes nudge { 0%, 100% { transform: translateX(-4px); } 50% { transform: translateX(4px); } }
 
 @layer base {
   * { @apply border-border outline-ring/50; }

@@ -22,7 +22,10 @@ export function VaultLive() {
 
 function VaultClient() {
   // One medal is always turned over, so it's obvious the coins and the list open details.
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelectedRaw] = useState(0);
+  // The swipe hint stays until the visitor moves through the medals once (it comes back on every visit).
+  const [moved, setMoved] = useState(false);
+  const setSelected = (i: number) => { setMoved(true); setSelectedRaw(Math.max(0, Math.min(medals.length - 1, i))); };
   const selectedRef = useRef(selected);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<{ select(i: number): void; dispose(): void } | null>(null);
@@ -43,7 +46,7 @@ function VaultClient() {
           { gold: css("--medal-gold"), silver: css("--medal-silver"), bronze: css("--medal-bronze") },
           getComputedStyle(document.body).fontFamily,
           matchMedia("(prefers-reduced-motion: reduce)").matches,
-          (i) => setSelected(Math.max(0, Math.min(medals.length - 1, i))),
+          (i) => { setMoved(true); setSelectedRaw(Math.max(0, Math.min(medals.length - 1, i))); },
         );
         sceneRef.current.select(selectedRef.current);
       } catch {
@@ -68,7 +71,31 @@ function VaultClient() {
   return (
     <>
       <VaultLayout
-        stage={<canvas ref={canvasRef} aria-hidden="true" className="block size-full cursor-pointer" />}
+        stage={
+          <>
+            <canvas ref={canvasRef} aria-hidden="true" className="block size-full cursor-pointer" />
+            {[-1, 1].map((d) => (
+              <button
+                key={d}
+                type="button"
+                aria-label={d < 0 ? "Previous medal" : "Next medal"}
+                disabled={selected + d < 0 || selected + d >= medals.length}
+                onClick={() => setSelected(selected + d)}
+                className={`absolute top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-vault-glass text-2xl leading-none ring-1 ring-vault-edge backdrop-blur disabled:invisible ${d < 0 ? "left-0" : "right-0"}`}
+              >
+                <span aria-hidden="true">{d < 0 ? "‹" : "›"}</span>
+              </button>
+            ))}
+            {!moved && (
+              <p className="pointer-events-none absolute inset-x-0 bottom-1 flex items-center justify-center gap-2 text-xs font-semibold text-vault-muted">
+                <span aria-hidden="true" className="inline-block animate-[nudge_1.4s_ease-in-out_infinite] motion-reduce:animate-none">←</span>
+                <span className="pointer-coarse:hidden">Use the arrows for more medals</span>
+                <span className="hidden pointer-coarse:inline">Swipe for more medals</span>
+                <span aria-hidden="true" className="inline-block animate-[nudge_1.4s_ease-in-out_infinite_reverse] motion-reduce:animate-none">→</span>
+              </p>
+            )}
+          </>
+        }
         card={
           <AnimatePresence initial={false} mode="wait">
             <m.article
