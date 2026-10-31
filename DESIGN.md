@@ -83,27 +83,21 @@ Motion setup: `LazyMotion strict` with features loaded by `import("./motion-feat
 
 ## Lighthouse
 
-Measured on the deployed host with the PageSpeed Insights web UI (the anonymous API was over its daily quota), mobile, a single run on commit `bd89324`:
+Measured on the deployed host with the PageSpeed Insights web UI, mobile. Single runs, so expect a few points of variance.
 
-| Performance | Accessibility | Best Practices | SEO |
-|---|---|---|---|
-| 98 | 100 | 100 | 100 |
+| Run | Commit | Performance | Accessibility | Best Practices | SEO | FCP | LCP | TBT | CLS | Speed Index |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-10-31 20:29 SAST | `70ec16d` (mobile pass) | 100 | 100 | 100 | 100 | 1.1 s | 1.1 s | 30 ms | 0 | 2.7 s |
+| 2026-10-31 19:50 SAST | `bd89324` (first deploy) | 98 | 100 | 100 | 100 | 1.1 s | 1.1 s | 90 ms | 0 | 4.1 s |
 
-Conditions: https://vinodaanimal.github.io/iveno-carolus/, 2026-10-31 19:50 SAST, Lighthouse 13.6.0, emulated Moto G Power, Slow 4G throttling, HeadlessChromium 153. Report: https://pagespeed.web.dev/analysis/https-vinodaanimal-github-io-iveno-carolus/10400to51c?form_factor=mobile
-
-| Metric | Value |
-|---|---|
-| First Contentful Paint | 1.1 s |
-| Largest Contentful Paint | 1.1 s |
-| Total Blocking Time | 90 ms |
-| Cumulative Layout Shift | 0 |
-| Speed Index | 4.1 s |
+Conditions: https://vinodaanimal.github.io/iveno-carolus/, Lighthouse 13.6.0, emulated Moto G Power, Slow 4G throttling, HeadlessChromium 153. Latest report: https://pagespeed.web.dev/analysis/https-vinodaanimal-github-io-iveno-carolus/2h8z7m5bbc?form_factor=mobile
 
 Notes, honestly:
 
-- This is one run. Expect a few points of variance.
-- Speed Index is the weakest metric. On a phone the crowd section starts within 600px of the fold, so three.js and the WebGL scene load during the test. That's also most of the 134 KiB "unused JavaScript" PSI reports.
-- GitHub Pages sets a 10-minute cache lifetime that the repo can't change (PSI's "efficient cache lifetimes" item).
+- three.js loads during the test, because on a phone the crowd starts within 600 px of the fold. That's most of PSI's ~133 KiB "unused JavaScript".
+- "Avoid non-composited animations" (diagnostic, unscored) lists the SVG stroke-dashoffset draws and hover colour transitions.
+- Each skill radio has two labels (the slab and its chip), so axe's "form fields with multiple labels" check comes back as needs-review. It's unscored, and both labels name the same layer.
+- GitHub Pages sets a 10-minute cache lifetime that the repo can't change.
 - The site has no `robots.txt` at the domain root (`vinodaanimal.github.io/robots.txt` is 404). It's a project site, so its own `/iveno-carolus/robots.txt` only documents the sitemap.
 
 ## Accessibility notes
